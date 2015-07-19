@@ -63,19 +63,19 @@ function validate_nginx_compatibility {
 
 	# validate that nginx is installed as service
 	if [ ! -f /etc/init.d/$NGINX_SERVICE_NAME ]; then
-		log "ERROR" "Could not identify nginx service"
+		log "ERROR" "Could not identify nginx service, please verify that nginx is properly installed on your system before you continue"
 		exit 1
 	fi
 
 	if [ ! -f $NGINX_ACCESS_LOG_PATH ]; then
-		log "ERROR" "Could find nginx access log file"
+		log "ERROR" "Could find nginx access log file, please verify that nginx is properly installed on your system before you continue"
 		exit 1
 	else
 		log "INFO" "Detected nginx access log file: $NGINX_ACCESS_LOG_PATH"
 	fi
 
 	if [ ! -f $NGINX_ERORR_LOG_PATH ]; then
-		log "ERROR" "Could not find nginx error log file"
+		log "ERROR" "Could not find nginx error log file, please verify that nginx is properly installed on your system before you continue"
 		exit 1
 	else
 		log "INFO" "Detected nginx error log file: $NGINX_ERORR_LOG_PATH"

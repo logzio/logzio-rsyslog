@@ -58,12 +58,12 @@ SCRIPT_VERSION="1.0.0"
 
 LOGZ_DIST_URL=https://dl.bintray.com/ofervelich/generic
 LOGZ_DIST=logzio-rsyslog.tar.gz
-export LOGZ_DIR=/tmp/logzio
 
 
 # ---------------------------------------- 
 # User input variables
 # ---------------------------------------- 
+# the rsyslog instalation type 
 export INSTALL_TYPE=""
 
 # the user's authentication token, this is a mandatory input
@@ -74,6 +74,77 @@ export INTERACTIVE_MODE="true"
 
 # Set the log level to debug (1=>debug 2=>info 3=>warn 4=>error)
 export LOG_LEVEL=2
+
+# logz.io working dir
+export LOGZ_DIR=/tmp/logzio
+
+
+# ---------------------------------------- 
+# script arguments
+# ---------------------------------------- 
+while :; do
+    case $1 in
+        -h|-\?|--help)
+            usage 0
+            ;;
+
+        -v|--verbose)
+            LOG_LEVEL=1
+            echo "[INFO]" "Log level is set to debug."
+            ;;
+
+        -q|--quite)
+            INTERACTIVE_MODE="false"
+            echo "[INFO]" "Interactive mode mode is disabled."
+            ;;
+
+        -t|--type)
+            if [ -n "$2" ]; then
+                INSTALL_TYPE=$2
+                echo "[INFO]" "Installation type is '$INSTALL_TYPE'."
+                shift 2
+                continue
+            else
+                echo "[ERROR]" "--type requires a non-empty option argument."
+                usage 1
+            fi
+            ;;
+
+        -a|--authtoken)
+            if [ -n "$2" ]; then
+                USER_TOKEN=$2
+                echo "[INFO]" "User token is '$USER_TOKEN'."
+                shift 2
+                continue
+            else
+                echo "[ERROR]" "--authtoken requires a non-empty option argument."
+                usage 1
+            fi
+            ;;
+
+        -d|--distribution)
+            if [ -n "$2" ]; then
+                LOGZ_DIST_URL=$2
+                LOGZ_DIST=`basename $LOGZ_DIST_URL`
+                echo "[INFO]" "Package distribution url set to: '$LOGZ_DIST_URL'."
+                shift 2
+                continue
+            else
+                echo "[ERROR]" "--distribution requires a non-empty option argument."
+                usage 1
+            fi
+            ;;           
+
+        --) # End of all options.
+            shift
+            break
+            ;;
+        *)  # Default case: If no more options then break out of the loop.
+            break
+    esac
+
+    shift
+done
 
 
 # ---------------------------------------- 
@@ -93,69 +164,13 @@ tar -xzf $LOGZ_DIR/$LOGZ_DIST -C $LOGZ_DIR
 rm -f $LOGZ_DIR/$LOGZ_DIST
 # ensure file are executable 
 chmod -R +x $LOGZ_DIR/rsyslog
-# update the logz dir to point to the location of the extracted tarball
+# update the logz working dir to point to the location of the extracted tarball
 export LOGZ_DIR=/tmp/logzio/rsyslog
 
 # include source
 source $LOGZ_DIR/configure_utils.sh
 
-
-
-# ---------------------------------------- 
-# script arguments
-# ---------------------------------------- 
-while :; do
-    case $1 in
-        -h|-\?|--help)
-            usage 0
-            ;;
-
-        -v|--verbose)
-			LOG_LEVEL=1
-			log "INFO" "Log level is set to debug"
-            ;;
-
-        -q|--quite)
-			INTERACTIVE_MODE="false"
-			log "INFO" "Interactive mode mode is disabled"
-            ;;
-
-        -t|--type)
-            if [ -n "$2" ]; then
-				INSTALL_TYPE=$2
-				log "INFO" "Installation type is '$INSTALL_TYPE'"
-                shift 2
-                continue
-            else
-                log "ERROR" "--type requires a non-empty option argument."
-                usage 1
-            fi
-            ;;
-
-        -a|--authtoken)
-            if [ -n "$2" ]; then
-                USER_TOKEN=$2
-				log "INFO" "User token is '$USER_TOKEN'"
-                shift 2
-                continue
-            else
-                log "ERROR" "--authtoken requires a non-empty option argument."
-                usage 1
-            fi
-            ;;   
-
-        --) # End of all options.
-            shift
-            break
-            ;;
-        *)  # Default case: If no more options then break out of the loop.
-            break
-    esac
-
-    shift
-done
-
-
+# execution ...
 if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
 	# execute
     log "DEBUG" "File to execute: $LOGZ_DIR/configure_${INSTALL_TYPE}.sh"
@@ -175,9 +190,9 @@ if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
     rm -rf $LOGZ_DIR
 
 else
-    log "ERROR" "Please make sure that you pass user authentication token, and an install type"
+    log "ERROR" "Please make sure that you pass user authentication token, and an install type."
 	usage 1
 fi
 
-
+log "INFO" "Completed."
 exit 0

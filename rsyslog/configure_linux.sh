@@ -84,35 +84,36 @@ function validate_network_connectivity {
 	log "INFO" "Checking if ${LISTENER_HOST} is reachable via ${LISTENER_PORT} port. This may take some time...."
 
 	local is_nc_installed=`nc -h &>/dev/null && echo $?`
-
+	local is_telnet_installed=`telnet -n 2>&1 | grep "Usage" | wc -l`
+ 	local status=0
 	if [[ $is_nc_installed -eq 0 ]]; then
-		nc -z ${LISTENER_HOST} ${LISTENER_PORT}	
+		nc -z ${LISTENER_HOST} ${LISTENER_PORT}
+		status=$?	
+	elif [[ $is_telnet_installed -eq 0 ]]; then
+		echo "-------------------------------------------"
+		echo "INFO" "Running telnet in order to validate connectivity to loz.io servers"
+		echo "INFO" "If connection is establish, a 'Connected to logz.io server', message will appear"
+		echo "INFO" "and you will be asked to hit the keys: 'Ctrl' followed by ']'"
+		echo "INFO" "when the telnet prompt appears hit 'q'"
+		echo "-------------------------------------------"
+
+		telnet ${LISTENER_HOST} ${LISTENER_PORT}
+		status=$?
 	else
-		local is_telnet_installed=`telnet -n 2>&1 | grep "Usage" | wc -l`
+		log "ERROR" "In order to validate connectivity to logz.io server, one of the following package [nc (netcat) | telnet] must be installed."
+		log "ERROR" "Please install them before we continue"
+    	
+    	would_you_like_to_continue
 
-		if [[ $is_telnet_installed -eq 0 ]]; then
-			echo "-------------------------------------------"
-			echo "INFO" "Running telnet in order to validate connectivity to loz.io servers"
-			echo "INFO" "If connection is establish, a 'Connected to logz.io server', message will appear"
-			echo "INFO" "and you will be asked to hit the keys: 'Ctrl' followed by ']'"
-			echo "INFO" "when the telnet prompt appears hit 'q'"
-			echo "-------------------------------------------"
-
-			telnet ${LISTENER_HOST} ${LISTENER_PORT}
-		else
-			log "ERROR" "In order to validate connectivity to logz.io server, one of the following package [nc (netcat) | telnet] must be installed."
-			log "ERROR" "Please install them before we continue"
-        	
-        	would_you_like_to_continue
-
-        	res=$?
-			if [ $res -eq 1 ]; then
-				exit 1
-			fi
+    	res=$?
+		if [ $res -eq 1 ]; then
+			exit 1
 		fi
+
+		status=0
 	fi
 
-	local status=$?
+
     if [ $status -ne 0 ]; then
         log "ERROR" "Host: '${LISTENER_HOST}' is not reachable via port '${LISTENER_PORT}'."
         log "ERROR" "Please check your network and firewall settings to the following ip's on port ${LISTENER_PORT}."

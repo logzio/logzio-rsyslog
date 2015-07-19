@@ -16,7 +16,8 @@ function install_apache {
 function install_nginx {
 	execute_cmd vagrant ssh -c "sudo apt-get update"
 	execute_cmd vagrant ssh -c "sudo apt-get -y install nginx"
-
+	execute_cmd vagrant ssh -c "sudo service nginx restart"
+	
 	if [[ $1 == "create_traffic" ]]; then
 		execute_cmd vagrant ssh -c "curl -H "Host:sub.domain.com" 127.0.0.1 > /dev/null"
 	fi
