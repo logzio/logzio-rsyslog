@@ -3,9 +3,7 @@
 # -----------------------
 # Utils
 # -----------------------
-
 source ./utils.sh
-
 
 
 # -----------------------
@@ -13,7 +11,7 @@ source ./utils.sh
 # -----------------------
 
 pushd ../.. > /dev/null
-	dists=("ubuntu/trusty64" "ubuntu/precise64")
+	dists=("chef/centos-6.5" "chef/centos-7.0" "chef/centos-6.6" "puppetlabs/centos-6.6-32-nocm" "chef/fedora-20" "chef/fedora-21" "chef/fedora-19")
 
 	for dist in ${dists[@]}; do
 		export VAGRANT_BOX="$dist"

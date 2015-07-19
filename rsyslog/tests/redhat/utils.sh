@@ -5,8 +5,8 @@ source ../tests.sh
 source ../utils.sh
 
 function install_apache {
-	execute_cmd vagrant ssh -c "sudo apt-get update"
-	execute_cmd vagrant ssh -c "sudo apt-get -y install apache2"
+	execute_cmd vagrant ssh -c "sudo yum -y install epel-release"
+	execute_cmd vagrant ssh -c "sudo yum -y install httpd"
 
 	if [[ $1 == "create_traffic" ]]; then
 		execute_cmd vagrant ssh -c "curl -H "Host:sub.domain.com" 127.0.0.1 > /dev/null"
@@ -14,8 +14,9 @@ function install_apache {
 }
 
 function install_nginx {
-	execute_cmd vagrant ssh -c "sudo apt-get update"
-	execute_cmd vagrant ssh -c "sudo apt-get -y install nginx"
+	execute_cmd vagrant ssh -c "sudo yum -y install epel-release"
+	execute_cmd vagrant ssh -c "sudo yum -y install nginx"
+	execute_cmd vagrant ssh -c "sudo /etc/init.d/nginx start"
 
 	if [[ $1 == "create_traffic" ]]; then
 		execute_cmd vagrant ssh -c "curl -H "Host:sub.domain.com" 127.0.0.1 > /dev/null"
@@ -23,8 +24,7 @@ function install_nginx {
 }
 
 function uninstall_rsyslog {
-	execute_cmd vagrant ssh -c "sudo apt-get -y remove rsyslog"
-	execute_cmd vagrant ssh -c "sudo apt-get -y purge rsyslog"
+	execute_cmd vagrant ssh -c "sudo yam -y remove rsyslog"
 }
 
 function remvoe_rsyslog_service {
@@ -36,7 +36,7 @@ function disable_traffic {
 }
 
 function remvoe_apache_service {
-	execute_cmd vagrant ssh -c "sudo rm -f /etc/init.d/apache2"
+	execute_cmd vagrant ssh -c "sudo rm -f /etc/init.d/httpd"
 }
 
 function remvoe_nginx_service {
