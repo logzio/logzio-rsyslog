@@ -3,10 +3,11 @@
 function fresh_vagrent {
 	execute_cmd vagrant destroy -f
 	execute_cmd vagrant up
+	execute_cmd vagrant ssh -c "curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz && tar xzf logzio-rsyslog.tar.gz"
 }
 
 function run_logz {
-	vagrant ssh -c "sudo /vagrant/install.sh --quite -a jMeylBTKkTxRnYeZfcbVmfRjnLBicggU -t $1"
+	vagrant ssh -c "sudo /home/vagrant/rsyslog/install.sh --quite -a jMeylBTKkTxRnYeZfcbVmfRjnLBicggU -t $1"
 }
 
 function execute_cmd {
