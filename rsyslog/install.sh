@@ -76,7 +76,7 @@ export INTERACTIVE_MODE="true"
 export LOG_LEVEL=2
 
 # logz.io working dir
-export LOGZ_DIR=/tmp/rsyslog
+export LOGZ_DIR=`pwd`
 
 
 # ---------------------------------------- 
