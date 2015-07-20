@@ -56,8 +56,8 @@ fi
 # ---------------------------------------- 
 SCRIPT_VERSION="1.0.0"
 
-LOGZ_DIST_URL=https://dl.bintray.com/ofervelich/generic
-LOGZ_DIST=logzio-rsyslog.tar.gz
+#LOGZ_DIST_URL=https://dl.bintray.com/ofervelich/generic
+#LOGZ_DIST=logzio-rsyslog.tar.gz
 
 
 # ---------------------------------------- 
@@ -76,7 +76,7 @@ export INTERACTIVE_MODE="true"
 export LOG_LEVEL=2
 
 # logz.io working dir
-export LOGZ_DIR=/tmp/logzio
+export LOGZ_DIR=/tmp/rsyslog
 
 
 # ---------------------------------------- 
@@ -122,19 +122,6 @@ while :; do
             fi
             ;;
 
-        -d|--distribution)
-            if [ -n "$2" ]; then
-                LOGZ_DIST_URL=$2
-                LOGZ_DIST=`basename $LOGZ_DIST_URL`
-                echo "[INFO]" "Package distribution url set to: '$LOGZ_DIST_URL'."
-                shift 2
-                continue
-            else
-                echo "[ERROR]" "--distribution requires a non-empty option argument."
-                usage 1
-            fi
-            ;;           
-
         --) # End of all options.
             shift
             break
@@ -150,22 +137,6 @@ done
 # ---------------------------------------- 
 # Setup dependencies
 # ---------------------------------------- 
-
-# Ensure an empty logzio directory in the tmp folder.
-rm -rf $LOGZ_DIR
-mkdir -p $LOGZ_DIR
-
-echo "[INFO] download script dependencies: $LOGZ_DIST ..."
-# download distribution
-curl -s -L -o $LOGZ_DIR/$LOGZ_DIST "$LOGZ_DIST_URL/$LOGZ_DIST"
-# extract to logz tmp folder
-tar -xzf $LOGZ_DIR/$LOGZ_DIST -C $LOGZ_DIR
-# remove tarball
-rm -f $LOGZ_DIR/$LOGZ_DIST
-# ensure file are executable 
-chmod -R +x $LOGZ_DIR/rsyslog
-# update the logz working dir to point to the location of the extracted tarball
-export LOGZ_DIR=/tmp/logzio/rsyslog
 
 # include source
 source $LOGZ_DIR/configure_utils.sh
