@@ -76,7 +76,7 @@ export INTERACTIVE_MODE="true"
 export LOG_LEVEL=2
 
 # logz.io working dir
-export LOGZ_DIR=$(pwd)
+export LOGZ_DIR=$(pwd)/rsyslog
 
 
 # ---------------------------------------- 
@@ -158,7 +158,7 @@ if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
     fi
     
     # cleanup
-#    rm -rf $LOGZ_DIR
+    rm -rf $LOGZ_DIR
 
 else
     log "ERROR" "Please make sure that you pass user authentication token, and an install type."
