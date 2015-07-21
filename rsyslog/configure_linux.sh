@@ -178,7 +178,6 @@ function install_network_tools {
 		if [ $res -eq 1 ]; then
 			# the user do not want to continue ..
 			faild_validate_network_connectivity "WARN"
-			exit 1
 		fi
 		
 		return 1

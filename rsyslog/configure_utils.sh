@@ -113,8 +113,7 @@ function would_you_like_to_continue {
 				[Yy]* )
 				break;;
 				[Nn]* )
-				echo "Bay bay.. "
-				exit 1	
+					return 1
 				;;
 				* ) echo "[INFO] Please answer yes or no.";;
 			esac
