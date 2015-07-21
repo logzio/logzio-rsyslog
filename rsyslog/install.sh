@@ -31,9 +31,9 @@ function usage {
     echo "Version: $SCRIPT_VERSION" 
     echo
     echo "Usage:"
-	echo "$(basename $0) -a auth_token -t install_type [-q suppress prompts] [-v verbose] [-h for help]"
+	echo "$(basename $0) -a auth_token -t type [-q suppress prompts] [-v verbose] [-h for help]"
 	echo
-	echo "-t(install type) Allowed values:"
+	echo "-t(type) Allowed values:"
 	echo "      1. linux"
 	echo "      2. apache"
 	echo "      3. nginx"
@@ -76,7 +76,7 @@ export INTERACTIVE_MODE="true"
 export LOG_LEVEL=2
 
 # logz.io working dir
-export LOGZ_DIR=$(pwd)/rsyslog
+export LOGZ_DIR=$(pwd)
 
 
 # ---------------------------------------- 

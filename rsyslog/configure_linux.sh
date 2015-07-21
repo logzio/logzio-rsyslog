@@ -81,47 +81,126 @@ function validate_os_compatibility {
 # listener servers
 # ----------------------------------------
 function validate_network_connectivity {
-	log "INFO" "Checking if ${LISTENER_HOST} is reachable via ${LISTENER_PORT} port. This may take some time...."
-
-	local is_nc_installed=`nc -h &>/dev/null && echo $?`
-	local is_telnet_installed=`telnet -n 2>&1 | grep "Usage" | wc -l`
+	# will hold the network connectivity status final result.
  	local status=0
-	if [[ $is_nc_installed -eq 0 ]]; then
+	# validate that some network connectivity check tools are installed, if not,
+ 	# ask the user if he want us to install it for him
+ 	validate_network_tools_installed
+
+ 	if [ $? -eq 1 ]; then
+		log "WARN" "Continue without network connectivity check... We can not ensure that your host can connect to our servers."
+		return 0
+	fi
+	
+	# Run tests nc OR netcat
+	if is_installed nc; then
+		log "INFO" "Checking if ${LISTENER_HOST} is reachable via ${LISTENER_PORT} port, using netcat. This may take some time...."
 		nc -z ${LISTENER_HOST} ${LISTENER_PORT}
-		status=$?	
-	elif [[ $is_telnet_installed -eq 0 ]]; then
+		status=$?
+	elif is_installed telnet; then
 		echo "-------------------------------------------"
-		echo "INFO" "Running telnet in order to validate connectivity to loz.io servers"
-		echo "INFO" "If connection is establish, a 'Connected to logz.io server', message will appear"
-		echo "INFO" "and you will be asked to hit the keys: 'Ctrl' followed by ']'"
-		echo "INFO" "when the telnet prompt appears hit 'q'"
+		echo "[INFO]" "Running telnet in order to validate connectivity to loz.io servers. This may take some time...."
+		echo "[INFO]" "If connection is establish, a 'Connected to logz.io server', message will appear"
+		echo "[INFO]" "and you will be asked to hit the keys: 'Ctrl' followed by ']'"
+		echo "[INFO]" "when the telnet prompt appears hit 'q'"
 		echo "-------------------------------------------"
 
 		telnet ${LISTENER_HOST} ${LISTENER_PORT}
 		status=$?
 	else
-		log "ERROR" "In order to validate connectivity to logz.io server, one of the following package [nc (netcat) | telnet] must be installed."
-		log "ERROR" "Please install them before we continue"
-    	
-    	would_you_like_to_continue
-
-    	res=$?
-		if [ $res -eq 1 ]; then
-			exit 1
-		fi
-
-		status=0
+		log "ERROR" "Something went wrong, not netcat nor telnet are installed, you should not be here."
+		exit 1
 	fi
 
-
     if [ $status -ne 0 ]; then
-        log "ERROR" "Host: '${LISTENER_HOST}' is not reachable via port '${LISTENER_PORT}'."
-        log "ERROR" "Please check your network and firewall settings to the following ip's on port ${LISTENER_PORT}."
-        nslookup ${LISTENER_HOST} | grep Address
-        exit $status
+        faild_validate_network_connectivity
+        exit 1
     else
     	log "INFO" "Host: '${LISTENER_HOST}' is reachable via port '${LISTENER_PORT}'."
     fi
+}
+
+# ----------------------------------------
+# Validate that some network connectivity check tools are installed, if not,
+# Ask the user if he want us to install it for him
+# ----------------------------------------
+function validate_network_tools_installed {
+	log "INFO" "Validate that network connectivity check tools are installed."
+
+	# check if netcat installed
+	is_installed nc
+	local is_nc_installed=$?
+ 	# check if telent installed
+ 	is_installed telnet
+	local is_telnet_installed=$?
+
+ 	if [[ $is_nc_installed -eq 1 ]] && [[ $is_telnet_installed -eq 1 ]]; then
+ 		log "WARN" "In order to validate connectivity to logz.io server, one of the following package [nc (netcat) | telnet] must be installed."
+		log "WARN" "Those packages are free to use, and available on any Linux distribution"
+		log "WARN" "We would like to install them for you."
+
+		would_you_like_to_continue
+
+		res=$?
+		if [ $res -eq 1 ]; then
+			# the user do not want to install them ..
+			faild_validate_network_connectivity "WARN"
+			return 1
+		else
+			# let's install them
+			install_network_tools
+			return $?
+		fi
+ 	else
+ 		log "DEBUG" "Network tools are installed ... "
+ 	fi
+
+ 	return 0
+}
+
+
+# ----------------------------------------
+# Installing netcat ..
+# ----------------------------------------
+function install_network_tools {
+	log "INFO" "Trying to install nc (netcat)"
+	if is_yam_based; then
+		yum -y install nc &> /dev/null
+	elif is_apt_based; then
+		apt-get -y install nc &> /dev/null
+	fi
+
+	if [[ $? -ne 0 ]]; then
+		log "ERROR" "Failed to install nc, Please consider to install it manually, before continuing."
+		
+		would_you_like_to_continue
+
+		if [ $res -eq 1 ]; then
+			# the user do not want to continue ..
+			faild_validate_network_connectivity "WARN"
+			exit 1
+		fi
+		
+		return 1
+	fi
+
+	log "INFO" "Netcat has been successfully installed"
+
+	return 0
+}
+
+
+# ----------------------------------------
+# Print massage to the user when connectivity when we failed to establish connection
+# ----------------------------------------
+function faild_validate_network_connectivity {
+	# check if nslookup installed
+	if is_installed nslookup; then
+	    log "$1" "Please check your network and firewall settings to the following ip's on port ${LISTENER_PORT}."
+	    nslookup ${LISTENER_HOST} | grep Address
+	else
+        log "$1" "Please check your network and firewall settings."
+	fi
 }
 
 
@@ -176,6 +255,7 @@ function install_rsyslog {
 		execute apt-get -y install rsyslog > /dev/null
 	else
 		log "ERROR" "Failed to install rsyslog, in order to continue please install it manually. You can find installation instructions at: http://www.rsyslog.com/doc/v8-stable/installation/index.html"
+		exit 1
 	fi
 }
 
@@ -189,7 +269,7 @@ function validate_rsyslog_is_running {
 	if [ ! -f /etc/init.d/$RSYSLOG_SERVICE_NAME ]; then
 		log "ERROR" "$RSYSLOG_SERVICE_NAME is not present as service."
 		log "INFO" "It seems that rsyslog is not installed on your system."
-		log "INFO" "Starting to install rsyslog"
+		log "INFO" "We would like to install it for you."
 
 		# verify that the user would like to install
 		would_you_like_to_continue
@@ -289,7 +369,7 @@ function ensure_spool_dir {
 		execute sudo mkdir -v $RSYSLOG_SPOOL_DIR
 	fi
 
-	if [[ is_ubuntu -eq 0 ]]; then
+	if is_ubuntu; then
 		log "INFO" "Setting permission on the rsyslog in $RSYSLOG_SPOOL_DIR"
 		execute sudo chown -R syslog:adm $RSYSLOG_SPOOL_DIR
 	fi

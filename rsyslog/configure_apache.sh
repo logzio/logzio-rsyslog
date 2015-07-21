@@ -105,7 +105,7 @@ function validate_apache_compatibility {
 	log "INFO" "Apache logs total size: $file_size"
 
 	# validate required apache version
-	local apache_version=`apache2 -v | grep version | awk '{print $3}' | tr -d "Apache/" | tr -d ' '`
+	local apache_version=`$APACHE_SERVICE_NAME -v | grep version | awk '{print $3}' | tr -d "Apache/" | tr -d ' '`
 	local apache_major_version=${apache_version%%.*}
  	
  	log "INFO" "Detected apache version: $apache_version"

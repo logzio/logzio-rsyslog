@@ -12,6 +12,13 @@ LOG_LEVELS[ERROR]=4
 # debug logs to console on a log level
 # ---------------------------------------- 
 function log {
+	if [ -z "$LOG_LEVELS" ]; then
+		echo "[$1] ${*:2}"
+		return 0
+	fi
+
+	echo "LOG_LEVELS is $LOG_LEVELS $1"
+
 	local current_level=${LOG_LEVELS[$1]}
 	
 	if [[ "${current_level}" -ge "${LOG_LEVEL}" ]]; then
@@ -82,10 +89,26 @@ function is_apt_based {
 	return 1
 }
 
+# ---------------------------------------- 
+# check if the pckages are installed
+# ---------------------------------------- 
+function is_installed {
+	if is_yam_based; then
+		if yum list installed "$@" >/dev/null 2>&1; then
+			return 0
+		else
+			return 1
+		fi
+	elif is_apt_based; then
+		dpkg-query -l "$@" >/dev/null 2>&1
+		return $?
+	fi
+}
+
 function would_you_like_to_continue {
 	if [ "$INTERACTIVE_MODE" == "true" ]; then
 		while true; do
-			read -p "Would you like to continue anyway? [yes|no]" yn
+			read -p "[INFO] Would you like to continue? [yes|no]" yn
 			case $yn in
 				[Yy]* )
 				break;;
@@ -93,7 +116,7 @@ function would_you_like_to_continue {
 				echo "Bay bay.. "
 				exit 1	
 				;;
-				* ) echo "Please answer yes or no.";;
+				* ) echo "[INFO] Please answer yes or no.";;
 			esac
 		done
 	else 
