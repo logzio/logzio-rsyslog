@@ -17,8 +17,6 @@ function log {
 		return 0
 	fi
 
-	echo "LOG_LEVELS is $LOG_LEVELS $1"
-
 	local current_level=${LOG_LEVELS[$1]}
 	
 	if [[ "${current_level}" -ge "${LOG_LEVEL}" ]]; then
