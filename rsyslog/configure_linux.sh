@@ -93,9 +93,9 @@ function validate_network_connectivity {
 	fi
 	
 	# Run tests nc OR netcat
-	if is_installed netcat || is_installed nc; then
+	if is_installed netcat || is_installed nc || is_installed nmap-ncat; then
 		log "INFO" "Checking if ${LISTENER_HOST} is reachable via ${LISTENER_PORT} port, using netcat. This may take some time...."
-		nc -z ${LISTENER_HOST} ${LISTENER_PORT}
+		echo "test" | nc ${LISTENER_HOST} ${LISTENER_PORT}
 		status=$?
 	elif is_installed telnet; then
 		echo "-------------------------------------------"
@@ -128,7 +128,7 @@ function validate_network_tools_installed {
 	log "INFO" "Validate that network connectivity check tools are installed."
 
 	# check if netcat installed
-	is_installed netcat || is_installed nc
+	is_installed netcat || is_installed nc || is_installed nmap-ncat
 	local is_nc_installed=$?
  	# check if telent installed
  	is_installed telnet

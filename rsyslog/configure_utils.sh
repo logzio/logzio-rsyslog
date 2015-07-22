@@ -161,7 +161,7 @@ function is_os_supported {
 		*"darwin"* )
 		#if the OS is mac then exit
 		log "ERROR" "Darwin or Mac OSX are not currently supported."
-		#exit 1
+		exit 1
 		;;
 		* )
 		log "WARN" "The linux distribution $LINUX_DIST has not been previously tested with Logz.io."
@@ -241,6 +241,17 @@ function write_conf {
 	execute chmod o+w ${rsyslog_conf_file}
 }
 
+
+# ---------------------------------------- 
+# deletes/refresh the state file
+# ---------------------------------------- 
+function refresh_state_file {
+	service_restart
+	sudo rm -f $RSYSLOG_SPOOL_DIR/stat-$FILE_TAG
+	service_restart
+}
+
+
 # ---------------------------------------- 
 # sum the size of a list of files
 # ---------------------------------------- 
@@ -256,6 +267,19 @@ function sum_files_size {
 
 	log "DEBUG" "Sum of files size: ${file_size}"
 	return $file_size
+}
+
+# ---------------------------------------- 
+# check if a path is a dirctory
+# ---------------------------------------- 
+function is_directory {
+	local path=$1
+
+	if [[ -d $path ]]; then
+		return 0
+	fi
+
+	return 1
 }
 
 

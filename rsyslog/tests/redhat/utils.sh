@@ -7,10 +7,7 @@ source ../utils.sh
 function install_apache {
 	execute_cmd vagrant ssh -c "sudo yum -y install epel-release"
 	execute_cmd vagrant ssh -c "sudo yum -y install httpd"
-
-	if [[ $1 == "create_traffic" ]]; then
-		execute_cmd vagrant ssh -c "curl -H "Host:sub.domain.com" 127.0.0.1 > /dev/null"
-	fi
+	execute_cmd vagrant ssh -c "sudo service httpd start"
 }
 
 function install_nginx {
