@@ -5,13 +5,13 @@ source ../tests.sh
 source ../utils.sh
 
 function install_apache {
-	execute_cmd vagrant ssh -c "sudo yum -y install epel-release"
+	vagrant ssh -c "sudo yum -y install epel-release"
 	execute_cmd vagrant ssh -c "sudo yum -y install httpd"
 	execute_cmd vagrant ssh -c "sudo service httpd start"
 }
 
 function install_nginx {
-	execute_cmd vagrant ssh -c "sudo yum -y install epel-release"
+	vagrant ssh -c "sudo yum -y install epel-release"
 	execute_cmd vagrant ssh -c "sudo yum -y install nginx"
 	execute_cmd vagrant ssh -c "sudo /etc/init.d/nginx start"
 
