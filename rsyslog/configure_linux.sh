@@ -265,7 +265,7 @@ function install_rsyslog {
 function validate_rsyslog_is_running {
 	log "INFO" "Validate if rsyslog is configured as service"
 
-	if [ ! -f /etc/init.d/$RSYSLOG_SERVICE_NAME ]; then
+	if [ ! -f /etc/init.d/$RSYSLOG_SERVICE_NAME ] && [ ! -f /usr/lib/systemd/system/rsyslog.service ]; then
 		log "ERROR" "$RSYSLOG_SERVICE_NAME is not present as service."
 		log "INFO" "It seems that rsyslog is not installed on your system."
 		log "INFO" "We would like to install it for you."
