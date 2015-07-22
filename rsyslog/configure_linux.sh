@@ -93,7 +93,7 @@ function validate_network_connectivity {
 	fi
 	
 	# Run tests nc OR netcat
-	if is_installed netcat; then
+	if is_installed netcat || is_installed nc; then
 		log "INFO" "Checking if ${LISTENER_HOST} is reachable via ${LISTENER_PORT} port, using netcat. This may take some time...."
 		nc -z ${LISTENER_HOST} ${LISTENER_PORT}
 		status=$?
@@ -128,7 +128,7 @@ function validate_network_tools_installed {
 	log "INFO" "Validate that network connectivity check tools are installed."
 
 	# check if netcat installed
-	is_installed netcat
+	is_installed netcat || is_installed nc
 	local is_nc_installed=$?
  	# check if telent installed
  	is_installed telnet
@@ -167,7 +167,7 @@ function install_network_tools {
 	if is_yam_based; then
 		yum -y install nc &> /dev/null
 	elif is_apt_based; then
-		apt-get -y install nc &> /dev/null
+		apt-get -y install netcat &> /dev/null
 	fi
 
 	if [[ $? -ne 0 ]]; then
