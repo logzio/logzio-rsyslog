@@ -117,7 +117,14 @@ function would_you_like_to_continue {
 			esac
 		done
 	else 
-		return 1
+		continue=$1
+		
+		if [[ -z $continue ]]; then
+			# set default return value to "please continue"
+			continue=0
+		fi
+
+		return $continue
 	fi
 
 	return 0
