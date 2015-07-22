@@ -30,7 +30,6 @@ pushd ../.. > /dev/null
 		execute_success_test test_configure_apache
 		execute_fail_test test_configure_apache_uninstalled
 		execute_fail_test test_configure_apache_not_a_service
-		# execute_fail_test test_configure_apache_missing_logs
 
 		execute_success_test test_configure_nginx
 		execute_fail_test test_configure_nginx_uninstalled

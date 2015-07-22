@@ -24,7 +24,7 @@ function install_nginx {
 }
 
 function uninstall_rsyslog {
-	execute_cmd vagrant ssh -c "sudo yam -y remove rsyslog"
+	execute_cmd vagrant ssh -c "sudo yum -y remove rsyslog"
 }
 
 function remvoe_rsyslog_service {
