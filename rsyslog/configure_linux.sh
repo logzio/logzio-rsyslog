@@ -102,7 +102,7 @@ function validate_network_connectivity {
 		echo "[INFO]" "Running telnet in order to validate connectivity to loz.io servers. This may take some time...."
 		echo "[INFO]" "If connection is establish, a 'Connected to logz.io server', message will appear"
 		echo "[INFO]" "and you will be asked to hit the keys: 'Ctrl' followed by ']'"
-		echo "[INFO]" "when the telnet prompt appears hit 'q'"
+		echo "[INFO]" "when the 'telnet>' prompt appears hit 'q'"
 		echo "-------------------------------------------"
 
 		telnet ${LISTENER_HOST} ${LISTENER_PORT}
@@ -249,9 +249,9 @@ function setup_rsyslog {
 function install_rsyslog {
 	log "INFO" "Trying to install rsyslog .. "
 	if is_yam_based; then
-		execute yum -y install rsyslog > /dev/null
+		execute yum -y install rsyslog &> /dev/null
 	elif is_apt_based; then
-		execute apt-get -y install rsyslog > /dev/null
+		execute apt-get -y install rsyslog &> /dev/null
 	else
 		log "ERROR" "Failed to install rsyslog, in order to continue please install it manually. You can find installation instructions at: http://www.rsyslog.com/doc/v8-stable/installation/index.html"
 		exit 1
