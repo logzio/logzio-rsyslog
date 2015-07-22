@@ -67,12 +67,6 @@ function validate_apache_compatibility {
 		APACHE_ERROR_LOG_FILE_NAME="error.log"
 	fi
 
-	# validate that apache is installed as service
-	if [ ! -f /etc/init.d/$APACHE_SERVICE_NAME ]; then
-		log "ERROR" "Could not identify apache service, please verify that apache is properly installed on your system before you continue."
-		exit 1
-	fi
-
 	APACHE_LOGS_DIRECTORY=/var/log/$APACHE_SERVICE_NAME
 	APACHE_ERORR_LOG_PATH=$APACHE_LOGS_DIRECTORY/$APACHE_ERROR_LOG_FILE_NAME
 	APACHE_ACCESS_LOG_PATH=$APACHE_LOGS_DIRECTORY/$APACHE_ACCESS_LOG_FILE_NAME

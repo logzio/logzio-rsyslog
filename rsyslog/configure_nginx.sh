@@ -59,13 +59,7 @@ function install_rsyslog_nginx_conf {
 # validate that nginx is installed properly 
 # ---------------------------------------- 
 function validate_nginx_compatibility {
-	log "INFO" "Validating that nginx is installed, and log files are accessible"
-
-	# validate that nginx is installed as service
-	if [ ! -f /etc/init.d/$NGINX_SERVICE_NAME ]; then
-		log "ERROR" "Could not identify nginx service, please verify that nginx is properly installed on your system before you continue"
-		exit 1
-	fi
+	log "INFO" "Validating that nginx is properly installed, and log files are accessible"
 
 	if [ ! -f $NGINX_ACCESS_LOG_PATH ]; then
 		log "ERROR" "Could find nginx access log file, please verify that nginx is properly installed on your system before you continue"
