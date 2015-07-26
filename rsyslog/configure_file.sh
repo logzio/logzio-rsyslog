@@ -201,7 +201,7 @@ function write_file_conf {
 	local monitored_file_path=$1
 	local monitored_file_normilized_name=$(echo ${1##*/} | tr . - | tr _ -);
 	local monitored_file_tag=${monitored_file_normilized_name}-$FILE_TAG
-	local monitored_state_file=$(echo -n "$monitored_file_normilized_name" | md5sum | tr -d ' ')$FILE_TAG
+	local monitored_state_file=stat-logzio-$(echo -n "$monitored_file_normilized_name" | md5sum | tr -d ' ')$FILE_TAG
 
 	# location of logzio rsyslog template file
 	local rsyslog_tmplate=$LOGZ_CONF_DIR/21-logzio-file.conf
