@@ -78,7 +78,7 @@ done
 # ---------------------------------------- 
 RSYSLOG_FILE_FILENAME="21-logzio-file-${FILE_TAG}.conf"
 
-if [[ -z $FILE_TAG ]] || [[ -x $FILE_PATH ]]; then
+if [[ -z $FILE_TAG ]] || [[ -z $FILE_PATH ]]; then
 	usage-file 1
 fi
 
