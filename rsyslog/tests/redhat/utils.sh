@@ -13,7 +13,7 @@ function install_apache {
 function install_nginx {
 	vagrant ssh -c "sudo yum -y install epel-release"
 	execute_cmd vagrant ssh -c "sudo yum -y install nginx"
-	execute_cmd vagrant ssh -c "sudo /etc/init.d/nginx start"
+	execute_cmd vagrant ssh -c "sudo /etc/init.d/nginx start || sudo service nginx start"
 
 	if [[ $1 == "create_traffic" ]]; then
 		execute_cmd vagrant ssh -c "curl -H "Host:sub.domain.com" 127.0.0.1 > /dev/null"

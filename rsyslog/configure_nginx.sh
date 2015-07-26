@@ -116,12 +116,8 @@ function write_nginx_conf {
 
 
 # ---------------------------------------- 
-# get the script parameters
+# start
 # ---------------------------------------- 
-
-# if the script is been included in anther script, execution needs to be prevented
-SHOULD_INVOKE=${1:-"true"}
-
-if [[ $SHOULD_INVOKE == "true" ]]; then
+if [[ $INSTALL_TYPE == "nginx" ]]; then
 	install_rsyslog_nginx_conf
 fi

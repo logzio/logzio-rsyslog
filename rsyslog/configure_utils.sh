@@ -140,9 +140,9 @@ function is_os_supported {
 
 	get_os
 	
-	LINUX_DIST_IN_LOWER_CASE=$(echo $LINUX_DIST | tr "[:upper:]" "[:lower:]")
+	local dist=$(echo $LINUX_DIST | tr "[:upper:]" "[:lower:]")
 	
-	case "$LINUX_DIST_IN_LOWER_CASE" in
+	case "$dist" in
 		*"ubuntu"* )
 		log "INFO" "Operating system is Ubuntu."
 		;;
@@ -242,13 +242,34 @@ function write_conf {
 }
 
 
+# ----------------------------------------
+# append content to the rsyslog conf file
+# ----------------------------------------
+function append_to_conf {
+	# name of logzio rsyslog conf file
+	local rsyslog_filename=${1}
+
+	# location of logzio rsyslog conf file
+	local rsyslog_conf_file=$RSYSLOG_ETC_DIR/${rsyslog_filename}
+	
+	# location of logzio rsyslog template file
+	local rsyslog_tmplate=$LOGZ_CONF_DIR/${rsyslog_filename}
+
+	log "INFO" "Appending rsyslog config to: ${rsyslog_filename}"
+	execute cat ${rsyslog_tmplate} >> ${rsyslog_conf_file}
+
+	execute chmod o+w ${rsyslog_conf_file}
+}
+
+
 # ---------------------------------------- 
 # deletes/refresh the state file
 # ---------------------------------------- 
 function refresh_state_file {
-	service_restart
-	sudo rm -f $RSYSLOG_SPOOL_DIR/stat-$FILE_TAG
-	service_restart
+	local file_name=$1
+	service $RSYSLOG_SERVICE_NAME stop
+	sudo rm -f $RSYSLOG_SPOOL_DIR/$file_name
+	service $RSYSLOG_SERVICE_NAME start
 }
 
 
@@ -282,14 +303,79 @@ function is_directory {
 	return 1
 }
 
+# ---------------------------------------- 
+# check if a path is a file
+# ---------------------------------------- 
+function is_file {
+	local path=$1
+
+	if [[ -f $path ]]; then
+		return 0
+	fi
+
+	return 1	
+}
+
+# ---------------------------------------- 
+# check if is a file and contains text
+# ---------------------------------------- 
+function is_text_file {
+	local path=$1
+
+	if is_file $path; then
+		
+		local file_desc=$(file $path)
+		#checking if it is a text file
+		file_desc=$(echo $file_desc | tr "[:upper:]" "[:lower:]")
+
+		if [[ $file_desc == *text* ]]; then
+			return 0
+		fi
+
+	fi
+
+	return 1	
+}
+
+# ---------------------------------------- 
+# validate proper logfile permission read 
+# by a given os distribution
+# ---------------------------------------- 
+function validate_logfile_read_permission {	
+	log "INFO" "Validate that the file has a proper read permission..."
+	local logfile=$1
+
+	# resolve os
+	get_os
+	
+	local dist=$(echo $LINUX_DIST | tr "[:upper:]" "[:lower:]")
+	# ignore redhat and centos, as they will by ok with (000)permissions
+	case "$dist" in
+		*"redhat"* )
+		;;
+		*"centos"* )
+		;;
+		* )
+			local group=$(ls -al $logfile | awk '{print $4}')
+			local permissions=$(ls -l $logfile)
+			# checking if the file has read permission for others or it belong to group 'adm'
+			local read_permission_others=${permissions:7:1}
+			if [[ $read_permission_others != r ]] || [[ $group == 'adm' ]]; then 
+				log "ERROR" "file $logfile does not have proper read permissions!"
+				return 1
+			fi
+		;;
+	esac
+
+	log "INFO" "File permission validated: $logfile"
+	return 0
+}
 
 # ---------------------------------------- 
 # Ensure that logs are been sent to logz.io 
 # listener server, and that they are been processed 
 # ---------------------------------------- 
 function validate_rsyslog_logzio_installation {
-	# check spool ??
-
 	if [[ ! -f $RSYSLOG_ETC_DIR/$1 ]]; then
 		log "ERROR" "Failed to find $1 at $RSYSLOG_ETC_DIR, something went wrong, Please address the manual installation at:"
 		log "ERROR" "https://app.logz.io/#/dashboard/data-sources/"
@@ -315,7 +401,7 @@ function service_restart {
 # ---------------------------------------- 
 function cleanup {
 	log "DEBUG" "Cleanup: delete logzio dir"
-	rm -rf /tmp/logzio
+	rm -rf $LOGZ_DIR
 }
 
 
