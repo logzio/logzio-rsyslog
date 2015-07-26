@@ -219,6 +219,7 @@ function write_file_conf {
 	execute sed -i "s|RSYSLOG_SPOOL_DIR|${RSYSLOG_SPOOL_DIR}|g" ${tmp_rsyslog_tmplate}
 	execute sed -i "s|PATH_TO_FILE|${monitored_file_path}|g" ${tmp_rsyslog_tmplate}
 	execute sed -i "s|FILE_TAG_NAME|${monitored_file_tag}|g" ${tmp_rsyslog_tmplate}
+	execute sed -i "s|TAG_NAME|${FILE_TAG}|g" ${tmp_rsyslog_tmplate}
 	execute sed -i "s|STATE_FILE_NAME|${monitored_state_file}|g" ${tmp_rsyslog_tmplate}
 
 	if [[ "$append" == "true" ]]; then
