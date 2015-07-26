@@ -135,19 +135,11 @@ function validate_file {
 	if ! is_file $monitored_file; then
 		log "ERROR" "Cannot find file: $monitored_file."
 		log "ERROR" "Please validate that you specify the correct file path."
-		return 1 # should be skipped in dir
-	fi
-
-	if ! is_text_file $monitored_file; then
-		log "ERROR" "The file: $monitored_file is not a TEXT file..."
-		log "ERROR" "Please validate that you specify the correct file path."
-		return 1 # should be skipped in dir
+		return 1
 	fi
 
 	if ! validate_logfile_read_permission; then
-		log "ERROR" "The file: $monitored_file is not a TEXT file..."
-		log "ERROR" "Please validate that you give the log file read permission for 'others' or attached to the 'adm' group."
-		return 1
+		log "WARN" "Please validate that you give the log file read permission for 'others' or attached to the 'adm' group."
 	fi
 
 	sum_files_size $monitored_file
@@ -157,6 +149,12 @@ function validate_file {
 
 	if [ $file_size -eq 0 ]; then
 		log "WARN" "It seems that there are no recent logs in $monitored_file, so there won't be any sent to logz.io."
+		return 1
+	fi
+
+	if ! is_text_file $monitored_file; then
+		log "ERROR" "The file: $monitored_file is not a TEXT file..."
+		log "ERROR" "Please validate that you specify the correct file path."
 		return 1
 	fi
 }
