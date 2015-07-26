@@ -133,7 +133,7 @@ function validate_file {
 	local monitored_file=$1
 	
 	if ! is_file $monitored_file; then
-		log "ERROR" "Cannot find file under: $monitored_file."
+		log "ERROR" "Cannot find file: $monitored_file."
 		log "ERROR" "Please validate that you specify the correct file path."
 		return 1 # should be skipped in dir
 	fi
@@ -144,7 +144,7 @@ function validate_file {
 		return 1 # should be skipped in dir
 	fi
 
-	if validate_logfile_read_permission; then
+	if ! validate_logfile_read_permission; then
 		log "ERROR" "The file: $monitored_file is not a TEXT file..."
 		log "ERROR" "Please validate that you give the log file read permission for 'others' or attached to the 'adm' group."
 		return 1
@@ -164,11 +164,11 @@ function validate_file {
 function monitor_directory {
 	log "INFO" "INFO" "Configuring all files under the directory: $FILE_PATH"
 	log "INFO" "Listing files:"
-	ls -1
+	ls -1 $FILE_PATH
 
 	local append="false"
 	
-	for file in $(find $FILE_PATH -name '*')
+	for file in $(find $FILE_PATH -type f -name '*')
 	do	
 		monitor_file $file $append
 
