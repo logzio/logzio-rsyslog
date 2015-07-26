@@ -31,6 +31,8 @@ pushd ../.. > /dev/null
 		execute_success_test test_configure_nginx
 		execute_fail_test test_configure_nginx_uninstalled
 		execute_fail_test test_configure_nginx_missing_logs
+		
+		execute_success_test test_configure_file
 	done
 	
 popd > /dev/null

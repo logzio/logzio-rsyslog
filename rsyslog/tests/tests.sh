@@ -9,7 +9,7 @@ function test_configure_rsyslog {
 	# start fresh machine
 	fresh_vagrent
 	# run rsyslog linux install
-	run_logz "linux"
+	run_logz "-t linux"
 }
 
 function test_configure_rsyslog_uninstalled {
@@ -18,7 +18,7 @@ function test_configure_rsyslog_uninstalled {
 	# delete rsyslog
 	uninstall_rsyslog
 	# run rsyslog linux install
-	run_logz "linux"
+	run_logz "-t linux"
 }
 
 
@@ -28,7 +28,7 @@ function test_configure_rsyslog_not_a_service {
 	# remove service
 	remvoe_rsyslog_service
 	# run rsyslog linux install
-	run_logz "linux"
+	run_logz "-t linux"
 }
 
 function test_configure_rsyslog_on_network {
@@ -37,7 +37,7 @@ function test_configure_rsyslog_on_network {
 	# prevent outgoing connection to destination on port 5000
 	disable_traffic
 	# run rsyslog linux install
-	run_logz "linux"
+	run_logz "-t linux"
 }
 
 
@@ -51,14 +51,14 @@ function test_configure_apache {
 	#install apache and make some network traffic
 	install_apache "create_traffic"
 	# run rsyslog apache install
-	run_logz "apache"
+	run_logz "-t apache"
 }
 
 function test_configure_apache_uninstalled {
 	# start fresh machine
 	fresh_vagrent
 	# run rsyslog apache install
-	run_logz "apache"
+	run_logz "-t apache"
 
 	#should fail: apache hasn't been installed
 }
@@ -71,7 +71,7 @@ function test_configure_apache_not_a_service {
 	# remove apache service
 	remvoe_apache_service
 	# run rsyslog apache install
-	run_logz "apache"
+	run_logz "-t apache"
 }
 
 function test_configure_apache_missing_logs {
@@ -82,7 +82,7 @@ function test_configure_apache_missing_logs {
 	#delete logs ...
 	delete_apache_logs
 	# run rsyslog apache install
-	run_logz "apache"
+	run_logz "-t apache"
 }
 
 function test_configure_apache_logs_empty {
@@ -91,7 +91,7 @@ function test_configure_apache_logs_empty {
 	#install apache without network traffic
 	install_apache
 	# run rsyslog apache install
-	run_logz "apache"
+	run_logz "-t apache"
 
 	# no traffic ...  
 }
@@ -108,14 +108,14 @@ function test_configure_nginx {
 	#install nginx and make some network traffic
 	install_nginx "create_traffic"
 	# run rsyslog nginx install
-	run_logz "nginx"
+	run_logz "-t nginx"
 }
 
 function test_configure_nginx_uninstalled {
 	# start fresh machine
 	fresh_vagrent
 	# run rsyslog nginx install
-	run_logz "nginx"
+	run_logz "-t nginx"
 
 	#should fail: nginx hasn't been installed
 }
@@ -128,7 +128,7 @@ function test_configure_nginx_not_a_service {
 	# remove nginx service
 	remvoe_nginx_service
 	# run rsyslog nginx install
-	run_logz "nginx"
+	run_logz "-t nginx"
 }
 
 function test_configure_nginx_missing_logs {
@@ -139,7 +139,7 @@ function test_configure_nginx_missing_logs {
 	#delete logs ...
 	delete_nginx_logs
 	# run rsyslog nginx install
-	run_logz "nginx"
+	run_logz "-t nginx"
 }
 
 function test_configure_nginx_logs_empty {
@@ -148,7 +148,24 @@ function test_configure_nginx_logs_empty {
 	#install nginx without network traffic
 	install_nginx
 	# run rsyslog nginx install
-	run_logz "nginx"
+	run_logz "-t nginx"
 
 	# no traffic ...  
+}
+
+
+
+
+# -----------------------
+# Tests - File
+# -----------------------
+
+
+function test_configure_file {
+	# start fresh machine
+	fresh_vagrent
+	#install apache and make some network traffic
+	install_apache "create_traffic"
+	# run rsyslog nginx install
+	test_file_path
 }

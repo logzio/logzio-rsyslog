@@ -51,3 +51,7 @@ function delete_apache_logs {
 function delete_nginx_logs {
 	execute_cmd vagrant ssh -c "sudo rm -fr /var/log/nginx"
 }
+
+function test_file_path {
+	run_logz "-t file -tag apache -p /var/log/apache2/"
+}
