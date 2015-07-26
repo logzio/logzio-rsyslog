@@ -87,7 +87,7 @@ fi
 # initiate rsyslog a custom linux conf installation, for single
 # file and directories, and validate compatibility 
 # ---------------------------------------- 
-function install_rsyslog_linux_conf {
+function install_rsyslog_file_conf {
 	# initiate rsyslog conf installation and validate compatibility 
 	install_rsyslog_conf
 
