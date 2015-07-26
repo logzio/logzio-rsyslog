@@ -374,21 +374,15 @@ function ensure_spool_dir {
 	fi
 }
 
+
 # ---------------------------------------- 
-# Let go ..
+# start
 # ---------------------------------------- 
 
 # validate that rsyslog is installed and running as service.
 setup_rsyslog
 
-# ---------------------------------------- 
-# get the script parameters
-# ---------------------------------------- 
-
-# if the script is been included in anther script, execution needs to be prevented
-SHOULD_INVOKE=${1:-"true"}
-
-if [[ $SHOULD_INVOKE == "true" ]]; then
+if [[ $INSTALL_TYPE == "nginx" ]]; then
 	install_rsyslog_conf
 fi
 

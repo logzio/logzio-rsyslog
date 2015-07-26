@@ -148,7 +148,7 @@ if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
 
     if [[ -f $LOGZ_DIR/configure_${INSTALL_TYPE}.sh ]]; then
         log "INFO" "Executing: configure ${INSTALL_TYPE}"
-        source $LOGZ_DIR/configure_${INSTALL_TYPE}.sh
+        source $LOGZ_DIR/configure_${INSTALL_TYPE}.sh $@
 
         # To be on the safe side, let's restart again
         service_restart

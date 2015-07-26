@@ -22,19 +22,19 @@ pushd ../.. > /dev/null
 		echo "DEBUG" "Using DISTRABUTION: $dist"
 		echo "------------------------------------------------------------" 
 		
-		execute_success_test test_configure_rsyslog
-		execute_success_test test_configure_rsyslog_uninstalled
-		execute_success_test test_configure_rsyslog_not_a_service
-		execute_fail_test test_configure_rsyslog_on_network
+		# execute_success_test test_configure_rsyslog
+		# execute_success_test test_configure_rsyslog_uninstalled
+		# execute_success_test test_configure_rsyslog_not_a_service
+		# execute_fail_test test_configure_rsyslog_on_network
 
-		execute_success_test test_configure_apache
-		execute_fail_test test_configure_apache_uninstalled
-		execute_fail_test test_configure_apache_not_a_service
+		# execute_success_test test_configure_apache
+		# execute_fail_test test_configure_apache_uninstalled
+		
+		# execute_success_test test_configure_nginx
+		# execute_fail_test test_configure_nginx_uninstalled
+		# execute_fail_test test_configure_nginx_missing_logs
 
-		execute_success_test test_configure_nginx
-		execute_fail_test test_configure_nginx_uninstalled
-		execute_fail_test test_configure_nginx_not_a_service
-		execute_fail_test test_configure_nginx_missing_logs
+		execute_success_test test_configure_file
 	done
 	
 popd > /dev/null

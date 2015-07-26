@@ -130,14 +130,11 @@ function write_apache_conf {
 	service_restart
 }
 
-
 # ---------------------------------------- 
-# get the script parameters
+# start
 # ---------------------------------------- 
 
-# if the script is been included in anther script, execution needs to be prevented
-SHOULD_INVOKE=${1:-"true"}
-
-if [[ $SHOULD_INVOKE == "true" ]]; then
+if [[ $INSTALL_TYPE == "apache" ]]; then
 	install_rsyslog_apache_conf
 fi
+
