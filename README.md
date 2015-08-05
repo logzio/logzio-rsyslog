@@ -10,8 +10,24 @@ Contains an intuitive and easy to use installation setup the will enable you to 
  - A common linux distribution
  - A valid Logz.io customer authentication token 
 
+## Install:
+```bash
+curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz
+tar xzf logzio-rsyslog.tar.gz
+```
+
 ## Usage:
 
+#### The script include the following use cases: 
+* Local system logs files monitoring
+* Application logs files monitoring
+
+#### Script options:
+
+* -t Logfile Type:
+     fdsfsfds
+
+ 
 ### Local system logs:
 
 Configure rsyslog to monitor logs from vireos system facilities on your local system (kernel, user-level messages, system daemons, security/authorization messages, etc.) and ship them to over Logz.io.
