@@ -169,3 +169,30 @@ function test_configure_file {
 	# run rsyslog nginx install
 	test_file_path
 }
+
+
+
+function create_json_file {
+    execute_cmd vagrant ssh -c 'echo { "key": "value1"} >> /home/vagrant/simple.json'
+    execute_cmd vagrant ssh -c 'echo { "key": "value2"} >> /home/vagrant/simple.json'
+    execute_cmd vagrant ssh -c 'echo { "key": "value3"} >> /home/vagrant/simple.json'
+    execute_cmd vagrant ssh -c 'echo { "key": "value4"} >> /home/vagrant/simple.json'
+    execute_cmd vagrant ssh -c 'echo { "key": "value5"} >> /home/vagrant/simple.json'
+    execute_cmd vagrant ssh -c 'echo { "key": "value6"} >> /home/vagrant/simple.json'
+    execute_cmd vagrant ssh -c 'echo { "key": "value7"} >> /home/vagrant/simple.json'
+}
+
+function test_json_file_path {
+	run_logz "-t file -tag myjson -p /home/vagrant/simple.json -c json"
+}
+
+function test_configure_json_file {
+	# start fresh machine
+	fresh_vagrent
+
+	create_json_file
+
+	test_json_file_path
+}
+
+
