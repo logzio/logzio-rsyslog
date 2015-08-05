@@ -29,6 +29,7 @@ sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--a
 	Logz.io customer authentication token.
 
 **-t | --type** 
+	
 	Alowed values:
 	-  linux
 	
