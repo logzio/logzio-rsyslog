@@ -63,17 +63,6 @@ function test_configure_apache_uninstalled {
 	#should fail: apache hasn't been installed
 }
 
-function test_configure_apache_not_a_service {
-	# start fresh machine
-	fresh_vagrent
-	#install apache and make some network traffic
-	install_apache "create_traffic"
-	# remove apache service
-	remvoe_apache_service
-	# run rsyslog apache install
-	run_logz "-t apache"
-}
-
 function test_configure_apache_missing_logs {
 	# start fresh machine
 	fresh_vagrent
@@ -83,6 +72,17 @@ function test_configure_apache_missing_logs {
 	delete_apache_logs
 	# run rsyslog apache install
 	run_logz "-t apache"
+}
+
+function test_configure_apache_custom_logs {
+	# start fresh machine
+	fresh_vagrent
+	#install apache and make some network traffic
+	install_apache "create_traffic"
+	#delete logs ...
+	copy_apache_logs
+	# run rsyslog apache install
+	run_logz "-t apache --errorlog ~/var/log/apache2/$1 --accesslog ~/var/log/apache2/$2"
 }
 
 function test_configure_apache_logs_empty {
@@ -120,17 +120,6 @@ function test_configure_nginx_uninstalled {
 	#should fail: nginx hasn't been installed
 }
 
-function test_configure_nginx_not_a_service {
-	# start fresh machine
-	fresh_vagrent
-	#install nginx and make some network traffic
-	install_nginx "create_traffic"
-	# remove nginx service
-	remvoe_nginx_service
-	# run rsyslog nginx install
-	run_logz "-t nginx"
-}
-
 function test_configure_nginx_missing_logs {
 	# start fresh machine
 	fresh_vagrent
@@ -140,6 +129,17 @@ function test_configure_nginx_missing_logs {
 	delete_nginx_logs
 	# run rsyslog nginx install
 	run_logz "-t nginx"
+}
+
+function test_configure_nginx_custom_logs {
+	# start fresh machine
+	fresh_vagrent
+	#install nginx and make some network traffic
+	install_nginx "create_traffic"
+	#copy logs ...
+	copy_nginx_logs
+	# run rsyslog nginx install
+	run_logz "-t nginx --errorlog ~/var/log/nginx/error.log --accesslog ~/var/log/nginx/access.log"
 }
 
 function test_configure_nginx_logs_empty {

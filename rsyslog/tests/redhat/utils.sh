@@ -48,6 +48,14 @@ function delete_nginx_logs {
 	execute_cmd vagrant ssh -c "sudo rm -fr /var/log/nginx"
 }
 
+function copy_apache_logs {
+	execute_cmd vagrant ssh -c "sudo cp -fr /var/log/apache2 ~/var/log/apache2"
+}
+
+function copy_nginx_logs {
+	execute_cmd vagrant ssh -c "sudo cp -fr /var/log/nginx ~/var/log/nginx"
+}
+
 function test_file_path {
 	run_logz "-t file -tag httpd -p /var/log/httpd/"
 }
