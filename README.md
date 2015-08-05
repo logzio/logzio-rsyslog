@@ -29,6 +29,7 @@ sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--a
 	Logz.io customer authentication token.
 
 **-t | --type** 
+	
 	Alowed values:
 	-  linux
 	
@@ -96,7 +97,7 @@ tar xzf logzio-rsyslog.tar.gz
 sudo rsyslog/install.sh -t linux -a "TOKEN"
 ```
 
-#### A Apache/Nginx log file:
+#### An Apache/Nginx log file:
 
 Configure rsyslog to monitor access and error log files, and ship them to over Logz.io. 
 Currently support for Apache2 and Nginx, access and error logs.
