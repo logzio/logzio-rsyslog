@@ -382,7 +382,7 @@ function ensure_spool_dir {
 # validate that rsyslog is installed and running as service.
 setup_rsyslog
 
-if [[ $INSTALL_TYPE == "nginx" ]]; then
+if [[ $INSTALL_TYPE == "linux" ]]; then
 	install_rsyslog_conf
 fi
 

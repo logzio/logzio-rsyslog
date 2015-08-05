@@ -1,4 +1,4 @@
-# logzio-shipper 1.0.0
+# logzio-rsyslog 1.0.0
 
 Configure rsyslog to send verity of system log to Logz.io
 Contains an intuitive and easy to use installation setup the will enable you to monitor your local system logs and/or any of the running demon log files, and ship them over to Logz.io.  

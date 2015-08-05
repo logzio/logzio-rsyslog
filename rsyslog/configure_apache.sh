@@ -3,7 +3,7 @@
 # ---------------------------------------- 
 # Setup dependencies
 # ---------------------------------------- 
-source $LOGZ_DIR/configure_linux.sh "false"
+source $LOGZ_DIR/configure_linux.sh
 
 
 
@@ -23,8 +23,54 @@ APACHE_ACCESS_LOG_FILE_NAME=""
 # The name of apache error log file
 APACHE_ERROR_LOG_FILE_NAME=""
 
+# The path of apache access log file
+APACHE_ACCESS_LOG_PATH=""
+
+# The path of apache error log file
+APACHE_ERORR_LOG_PATH=""
+
 # The name of logzio syslog conf file
 RSYSLOG_APACHE_FILENAME="21-logzio-apache.conf"
+
+
+
+# ---------------------------------------- 
+# script arguments (override defaults)
+# ---------------------------------------- 
+while :; do
+    case $1 in
+		--errorlog ) shift
+			APACHE_ERORR_LOG_PATH=$(readlink -f "$1")
+
+			if [ -f "$APACHE_ERORR_LOG_PATH" ];then
+				APACHE_ERROR_LOG_FILE_NAME="${APACHE_ERORR_LOG_PATH##*/}"
+				log "INFO" "Monitoring file: $APACHE_ERORR_LOG_PATH"
+			else
+				log "ERROR" "Cannot access $APACHE_ERORR_LOG_PATH: No such file"
+				exit 1
+			fi
+			;;
+		--accesslog ) shift
+			APACHE_ACCESS_LOG_PATH=$(readlink -f "$1")
+
+			if [ -f "$APACHE_ACCESS_LOG_PATH" ];then
+				APACHE_ACCESS_LOG_FILE_NAME="${APACHE_ACCESS_LOG_PATH##*/}"
+				log "INFO" "Monitoring file: $APACHE_ACCESS_LOG_PATH"
+			else
+				log "ERROR" "Cannot access $APACHE_ACCESS_LOG_PATH: No such file"
+				exit 1
+			fi
+			;;
+        --) # End of all options.
+            shift
+            break
+            ;;
+        *)  # Default case: If no more options then break out of the loop.
+            break
+    esac
+
+    shift
+done
 
 
 # ---------------------------------------- 
@@ -51,24 +97,23 @@ function install_rsyslog_apache_conf {
 
 
 # ---------------------------------------- 
-# validate that apache is installed properly 
+# Validating that apache access logs exist
 # ----------------------------------------
-function validate_apache_compatibility {
-	log "INFO" "Validating that apache is installed, and log files are accessible"
+function validate_apache_access_logs {
+	if [ "$APACHE_ACCESS_LOG_PATH" != "" ]; then
+		return 0
+	fi
+
+	log "INFO" "Validating that apache access logs exist, and log files are accessible"
 
 	if is_yam_based; then
-		APACHE_SERVICE_NAME="httpd"
 		APACHE_ACCESS_LOG_FILE_NAME="access_log"
-		APACHE_ERROR_LOG_FILE_NAME="error_log"
 	
 	elif is_apt_based; then
-		APACHE_SERVICE_NAME="apache2"
 		APACHE_ACCESS_LOG_FILE_NAME="access.log"
-		APACHE_ERROR_LOG_FILE_NAME="error.log"
 	fi
 
 	APACHE_LOGS_DIRECTORY=/var/log/$APACHE_SERVICE_NAME
-	APACHE_ERORR_LOG_PATH=$APACHE_LOGS_DIRECTORY/$APACHE_ERROR_LOG_FILE_NAME
 	APACHE_ACCESS_LOG_PATH=$APACHE_LOGS_DIRECTORY/$APACHE_ACCESS_LOG_FILE_NAME
 
 	if [ ! -f $APACHE_ACCESS_LOG_PATH ]; then
@@ -77,13 +122,61 @@ function validate_apache_compatibility {
 	else
 		log "INFO" "Detected apache access log file: $APACHE_ACCESS_LOG_PATH"
 	fi
+}
 
+
+# ---------------------------------------- 
+# Validating that apache error logs exist
+# ----------------------------------------
+function validate_apache_error_logs {
+	if [ "$APACHE_ERORR_LOG_PATH" != "" ]; then
+		return 0
+	fi
+
+	log "INFO" "Validating that apache error logs exist, and log files are accessible"
+
+	if is_yam_based; then
+		APACHE_ACCESS_LOG_FILE_NAME="error_log"
+	
+	elif is_apt_based; then
+		APACHE_ACCESS_LOG_FILE_NAME="error.log"
+	fi
+
+	APACHE_LOGS_DIRECTORY=/var/log/$APACHE_SERVICE_NAME
+	APACHE_ERORR_LOG_PATH=$APACHE_LOGS_DIRECTORY/$APACHE_ERROR_LOG_FILE_NAME
+	
 	if [ ! -f $APACHE_ERORR_LOG_PATH ]; then
 		log "ERROR" "Could not find apache error log file, please verify that apache is properly installed on your system before you continue."
 		exit 1
 	else
 		log "INFO" "Detected apache error log file: $APACHE_ERORR_LOG_PATH"
 	fi
+}
+
+# ---------------------------------------- 
+# validate that apache is installed properly 
+# ----------------------------------------
+function validate_apache_service_name {
+	log "INFO" "Validating that apache is service name match the linux distribution"
+
+	if is_yam_based; then
+		APACHE_SERVICE_NAME="httpd"	
+	elif is_apt_based; then
+		APACHE_SERVICE_NAME="apache2"
+	fi
+}
+
+# ---------------------------------------- 
+# validate that apache is installed properly 
+# ----------------------------------------
+function validate_apache_compatibility {
+	log "INFO" "Validating that apache is installed, and log files are accessible"
+
+	validate_apache_service_name
+
+	validate_apache_access_logs	
+
+	validate_apache_error_logs
 
 	log "INFO" "Computing total size for apache log files..."
 

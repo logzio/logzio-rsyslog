@@ -3,7 +3,7 @@
 # ---------------------------------------- 
 # Setup dependencies
 # ---------------------------------------- 
-source $LOGZ_DIR/configure_linux.sh "false"
+source $LOGZ_DIR/configure_linux.sh
 
 
 # ---------------------------------------- 
@@ -16,13 +16,8 @@ function usage-file {
     echo "Version: $SCRIPT_VERSION" 
     echo
     echo "Usage:"
-	echo "$(basename $0) -a auth_token -t type -tag filetag -p filepath [-q suppress prompts] [-v verbose] [-h for help]"
+	echo "$(basename $0) -a auth_token -t linux -tag filetag -p filepath [-q suppress prompts] [-v verbose] [-h for help]"
 	echo
-	echo "-t(type) Allowed values:"
-	echo "      1. linux"
-	echo "      2. apache"
-	echo "      3. nginx"
-	echo "      4. file"
 	echo
 
     exit $1

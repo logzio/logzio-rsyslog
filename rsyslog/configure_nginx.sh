@@ -3,7 +3,7 @@
 # ---------------------------------------- 
 # Setup dependencies
 # ---------------------------------------- 
-source $LOGZ_DIR/configure_linux.sh "false"
+source $LOGZ_DIR/configure_linux.sh
 
 
 
@@ -31,6 +31,45 @@ NGINX_ACCESS_LOG_PATH=$NGINX_LOGS_DIRECTORY/$NGINX_ACCESS_LOG_FILE_NAME
 
 # The name of logzio syslog conf file
 RSYSLOG_NGINX_FILENAME="21-logzio-nginx.conf"
+
+
+# ---------------------------------------- 
+# script arguments (override defaults)
+# ---------------------------------------- 
+while :; do
+    case $1 in
+		--errorlog ) shift
+			NGINX_ERORR_LOG_PATH=$(readlink -f "$1")
+
+			if [ -f "$NGINX_ERORR_LOG_PATH" ];then
+				NGINX_ERROR_LOG_FILE_NAME="${NGINX_ERORR_LOG_PATH##*/}"
+				log "INFO" "Monitoring file: $NGINX_ERORR_LOG_PATH"
+			else
+				log "ERROR" "Cannot access $NGINX_ERORR_LOG_PATH: No such file"
+				exit 1
+			fi
+			;;
+		--accesslog ) shift
+			NGINX_ACCESS_LOG_PATH=$(readlink -f "$1")
+
+			if [ -f "$NGINX_ACCESS_LOG_PATH" ];then
+				NGINX_ACCESS_LOG_FILE_NAME="${NGINX_ACCESS_LOG_PATH##*/}"
+				log "INFO" "Monitoring file: $NGINX_ACCESS_LOG_PATH"
+			else
+				log "ERROR" "Cannot access $NGINX_ACCESS_LOG_PATH: No such file"
+				exit 1
+			fi
+			;;
+        --) # End of all options.
+            shift
+            break
+            ;;
+        *)  # Default case: If no more options then break out of the loop.
+            break
+    esac
+
+    shift
+done
 
 
 # ---------------------------------------- 
