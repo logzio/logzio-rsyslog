@@ -18,14 +18,21 @@ tar xzf logzio-rsyslog.tar.gz
 
 ## Usage:
 
+```bash
+sudo rsyslog/install.sh -t TYPE -a TOKEN
+```
+
 #### The script include the following use cases: 
-* Local system logs files monitoring
-* Application logs files monitoring
+- Local system logs files monitoring
+- Application logs files monitoring
 
 #### Script options:
 
-* -t Logfile Type:
-     fdsfsfds
+** -t | --type ** Alowed values:
+-  linux
+	
+	Local system logs files monitoring
+
 
  
 ### Local system logs:
