@@ -69,6 +69,9 @@ export INSTALL_TYPE=""
 # the user's authentication token, this is a mandatory input
 export USER_TOKEN=""
 
+# the log's file codec,default to text (allowed values text, json)
+export CODEC_TYPE=""
+
 # if this variable is set to false then suppress all prompts
 export INTERACTIVE_MODE="true"
 
@@ -109,6 +112,15 @@ while :; do
                 usage 1
             fi
             ;;
+        
+        -c|--codec)
+            if [ -n "$2" ]; then
+                CODEC_TYPE=$2
+                echo "[INFO]" "Log file codec is '$CODEC_TYPE'."
+                shift 2
+                continue
+            fi
+            ;;
 
         -a|--authtoken)
             if [ -n "$2" ]; then
@@ -143,7 +155,14 @@ source $LOGZ_DIR/configure_utils.sh
 
 # execution ...
 if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
-	# execute
+	
+    # ensure valid codec
+    if [[ "$CODEC_TYPE" != "json" ]]; then
+        CODEC_TYPE="text"
+    fi
+    log "DEBUG" "File codec is: $CODEC_TYPE"
+
+    # execute
     log "DEBUG" "File to execute: $LOGZ_DIR/configure_${INSTALL_TYPE}.sh"
 
     if [[ -f $LOGZ_DIR/configure_${INSTALL_TYPE}.sh ]]; then

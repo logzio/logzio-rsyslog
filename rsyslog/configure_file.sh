@@ -71,7 +71,7 @@ done
 # ---------------------------------------- 
 # Setup variables
 # ---------------------------------------- 
-RSYSLOG_FILE_FILENAME="21-logzio-file-${FILE_TAG}.conf"
+RSYSLOG_FILE_FILENAME="21-logzio-${CODEC_TYPE}-file-${FILE_TAG}.conf"
 
 if [[ -z $FILE_TAG ]] || [[ -z $FILE_PATH ]]; then
 	usage-file 1
@@ -197,7 +197,7 @@ function write_file_conf {
 	local monitored_state_file=stat-logzio-$(echo -n "$monitored_file_normilized_name" | md5sum | tr -d ' ')$FILE_TAG
 
 	# location of logzio rsyslog template file
-	local rsyslog_tmplate=$LOGZ_CONF_DIR/21-logzio-file.conf
+	local rsyslog_tmplate=$LOGZ_CONF_DIR/21-logzio-${CODEC_TYPE}-file.conf
 	local tmp_rsyslog_tmplate=$LOGZ_CONF_DIR/${RSYSLOG_FILE_FILENAME}
 	
 	log "INFO" "Write the rsyslog conf file: $RSYSLOG_FILE_FILENAME"
