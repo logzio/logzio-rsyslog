@@ -30,7 +30,6 @@ sudo rsyslog/install.sh -t TYPE -a TOKEN
 
 ** -t | --type ** Alowed values:
 -  linux
-	
 	Local system logs files monitoring
 
 
