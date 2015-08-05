@@ -103,7 +103,7 @@ Currently support for Apache2 and Nginx, access and error logs.
 
 In the following sample please replace:
  - TOKEN, with your customer authentication token.
- - 
+ - accesslog and errorlog are optional
 
 Monitor Apache syslog:
 
