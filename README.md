@@ -46,19 +46,19 @@ sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--a
 	Configure rsyslog to monitor Apache2 access and error log files, and ship them over to [Logz.io](https://logz.io)
 	The script will attempt to resolve the location of the log files according to the OS distribution.
 	For yum based distributions the log file will be mapped to:
-	- access `/var/log/httpd/access_log` (can be overrided using the option --accesslog)
-	- error `/var/log/httpd/error_log` (can be overrided using the option --errorlog)
+		- access `/var/log/httpd/access_log` (can be overrided using the option --accesslog)
+		- error `/var/log/httpd/error_log` (can be overrided using the option --errorlog)
 	For apt based distributions the log file will be mapped to:
-	- access `/var/log/apache2/access.log` (can be overrided using the option --accesslog)
-	- error `/var/log/apache2/error.log` (can be overrided using the option --errorlog)
+		- access `/var/log/apache2/access.log` (can be overrided using the option --accesslog)
+		- error `/var/log/apache2/error.log` (can be overrided using the option --errorlog)
 
 	- nginx
 
 	Nginx log files:
 	Configure rsyslog to monitor Nginx access and error log files, and ship them over to Logz.io
 	The script will attempt to resolve the location of the log files.
-	- access `/var/log/nginx/access.log` (can be overrided using the option --accesslog)
-	- error `/var/log/nginx/error.log` (can be overrided using the option --errorlog)
+		- access `/var/log/nginx/access.log` (can be overrided using the option --accesslog)
+		- error `/var/log/nginx/error.log` (can be overrided using the option --errorlog)
 
 **-q | --quite** 
 
