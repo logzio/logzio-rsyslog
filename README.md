@@ -77,6 +77,10 @@ The following option avilable only when using the `--type file` option
 	
 	Attach a TAG value to a monitored file.
 
+**-c| --codec** 
+	
+	Default to text. The file content codec, currntly support text and json
+
 
 ### Example and use cases:
 
