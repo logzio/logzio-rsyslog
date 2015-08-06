@@ -1,19 +1,18 @@
 # logzio-rsyslog 1.0.0
 
-Configure rsyslog to send verity of system log to Logz.io
-Contains an intuitive and easy to use installation setup the will enable you to monitor your local system logs and/or any of the running demon log files, and ship them over to Logz.io.  
+Configure rsyslog to send verity of system log to [Logz.io](https://logz.io).
+Contains an intuitive and easy to use installation setup the will enable you to monitor your local system logs and/or any of the running daemon log files, and ship them over to [Logz.io](https://logz.io).  
 
-## requirements
+## Requirements
  - The setup assumes that you have a sudo access
  - Rsyslog version 5.8.0 and above
  - Allow outgoing TCP traffic to destination port 5000
  - A common linux distribution
- - A valid Logz.io customer authentication token 
+ - A valid Logz.io customer authentication token, which can be obtained with an account on [Logz.io's website](https://logz.io)
 
 ## Install:
 ```bash
-curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz
-tar xzf logzio-rsyslog.tar.gz
+curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz ; tar xzf logzio-rsyslog.tar.gz
 ```
 
 ## Usage:
@@ -34,29 +33,29 @@ sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--a
 	-  linux
 	
 	Local system logs files monitoring:
-	Configure rsyslog to monitor logs from vireos system facilities on your local system (kernel, user-level messages, system daemons, security/authorization messages, etc.) and ship them to over Logz.io.
+	Configure rsyslog to monitor logs from vireos system facilities on your local system (kernel, user-level messages, system daemons, security/authorization messages, etc.) and ship them over to [Logz.io](https://logz.io).
 
 	- file
 
 	A General log file:
-	Configure rsyslog to monitor a log file. It can monitor a single log file or a directory, and ship them to over Logz.io.
+	Configure rsyslog to monitor a log file. It can monitor a single log file or a directory, and ship them over to [Logz.io](https://logz.io).
 
 	- apache
 
 	Apache log files:
-	Configure rsyslog to monitor Apache2 access and error log files, and ship them to over Logz.io
+	Configure rsyslog to monitor Apache2 access and error log files, and ship them over to [Logz.io](https://logz.io)
 	The script will attempt to resolve the location of the log files according to the OS distribution.
-	For yum based distribution the log file will be mapped to:
+	For yum based distributions the log file will be mapped to:
 	- access `/var/log/httpd/access_log` (can be overrided using the option --accesslog)
 	- error `/var/log/httpd/error_log` (can be overrided using the option --errorlog)
-	For apt based distribution the log file will be mapped to:
+	For apt based distributions the log file will be mapped to:
 	- access `/var/log/apache2/access.log` (can be overrided using the option --accesslog)
 	- error `/var/log/apache2/error.log` (can be overrided using the option --errorlog)
 
 	- nginx
 
 	Nginx log files:
-	Configure rsyslog to monitor Nginx access and error log files, and ship them to over Logz.io
+	Configure rsyslog to monitor Nginx access and error log files, and ship them over to Logz.io
 	The script will attempt to resolve the location of the log files.
 	- access `/var/log/nginx/access.log` (can be overrided using the option --accesslog)
 	- error `/var/log/nginx/error.log` (can be overrided using the option --errorlog)
@@ -90,7 +89,7 @@ The script include the following use cases:
 
 #### Local system logs:
 
-Configure rsyslog to monitor logs from vireos system facilities on your local system (kernel, user-level messages, system daemons, security/authorization messages, etc.) and ship them to over Logz.io.
+Configure rsyslog to monitor logs from various system facilities on your local system (kernel, user-level messages, system daemons, security/authorization messages, etc.) and ship them over to Logz.io.
 
 In the following sample please replace:
  - TOKEN, with your customer authentication token.
@@ -103,7 +102,7 @@ sudo rsyslog/install.sh -t linux -a "TOKEN"
 
 #### An Apache/Nginx log file:
 
-Configure rsyslog to monitor access and error log files, and ship them to over Logz.io. 
+Configure rsyslog to monitor access and error log files, and ship them over to Logz.io. 
 Currently support for Apache2 and Nginx, access and error logs.
 
 In the following sample please replace:
@@ -128,7 +127,8 @@ sudo rsyslog/install.sh -t nginx -a "TOKEN" [--accesslog] [--errorlog]
 
 #### A General Linux log file:
 
-Configure rsyslog to monitor a log. It can monitor a single log file or a directory, and ship them to over Logz.io.
+	Configure rsyslog to monitor Apache2 access and error log files, and ship them over to [Logz.io](https://logz.io)
+Configure rsyslog to monitor a log. It can monitor a single log file or a directory, and ship them over to Logz.io.
 In case of directory all first level files will be monitored.
 
 In the following sample please replace:
