@@ -317,7 +317,7 @@ function validate_rsyslog_configuration {
 
 	local has_errors="false"
 
-	rsyslogd -N1 -f /etc/rsyslog.conf
+	rsyslogd -N1 -f /etc/rsyslog.conf 2>&1
 
 	if [[ $? -ne 0 ]]; then
 		#has_errors="true"
