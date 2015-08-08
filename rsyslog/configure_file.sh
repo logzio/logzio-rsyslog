@@ -16,7 +16,7 @@ function usage-file {
     echo "Version: $SCRIPT_VERSION" 
     echo
     echo "Usage:"
-	echo "$(basename $0) -a auth_token -t linux -tag filetag -p filepath [-q suppress prompts] [-v verbose] [-h for help]"
+	echo "$(basename $0) -a auth_token -t file -tag filetag -p filepath [-q suppress prompts] [-v verbose] [-h for help]"
 	echo
 	echo
 
