@@ -138,7 +138,7 @@ In the following sample please replace:
 ```bash
 curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz
 tar xzf logzio-rsyslog.tar.gz
-sudo rsyslog/install.sh -t file -a "TOKEN" -f "FILE" -tag "APP_NAME" 
+sudo rsyslog/install.sh -t file -a "TOKEN" -p "FILE" -tag "APP_NAME" 
 ```
 
 
