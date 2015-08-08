@@ -136,10 +136,10 @@ function validate_apache_error_logs {
 	log "INFO" "Validating that apache error logs exist, and log files are accessible"
 
 	if is_yam_based; then
-		APACHE_ACCESS_LOG_FILE_NAME="error_log"
+		APACHE_ERROR_LOG_FILE_NAME="error_log"
 	
 	elif is_apt_based; then
-		APACHE_ACCESS_LOG_FILE_NAME="error.log"
+		APACHE_ERROR_LOG_FILE_NAME="error.log"
 	fi
 
 	APACHE_LOGS_DIRECTORY=/var/log/$APACHE_SERVICE_NAME
