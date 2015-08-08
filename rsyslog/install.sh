@@ -96,7 +96,7 @@ while :; do
             echo "[INFO]" "Log level is set to debug."
             ;;
 
-        -q|--quite)
+        -q|--quiet)
             INTERACTIVE_MODE="false"
             echo "[INFO]" "Interactive mode mode is disabled."
             ;;
