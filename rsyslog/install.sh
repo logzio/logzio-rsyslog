@@ -43,6 +43,7 @@ function usage {
     exit $1
 }
 
+
 # ---------------------------------------- 
 # validate that the user has root privileges
 # ---------------------------------------- 
@@ -79,7 +80,7 @@ export INTERACTIVE_MODE="true"
 export LOG_LEVEL=2
 
 # logz.io working dir
-export LOGZ_DIR=$(pwd)/rsyslog
+export LOGZ_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 
 # ---------------------------------------- 
