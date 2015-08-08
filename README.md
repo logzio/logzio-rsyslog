@@ -127,8 +127,7 @@ sudo rsyslog/install.sh -t nginx -a "TOKEN" [--accesslog] [--errorlog]
 
 #### A General Linux log file:
 
-	Configure rsyslog to monitor Apache2 access and error log files, and ship them over to [Logz.io](https://logz.io)
-Configure rsyslog to monitor a log. It can monitor a single log file or a directory, and ship them over to Logz.io.
+Configure rsyslog to monitor a log file. It can monitor a single log file or a directory, and ship them over to Logz.io.
 In case of directory all first level files will be monitored.
 
 In the following sample please replace:
@@ -139,7 +138,7 @@ In the following sample please replace:
 ```bash
 curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz
 tar xzf logzio-rsyslog.tar.gz
-sudo rsyslog/install.sh -t file -a "TOKEN" -f "FILE" --tag "APP_NAME" [--filepath] [--filetag] 
+sudo rsyslog/install.sh -t file -a "TOKEN" -f "FILE" -tag "APP_NAME" 
 ```
 
 
