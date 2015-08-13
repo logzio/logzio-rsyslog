@@ -78,7 +78,7 @@ done
 # ---------------------------------------- 
 function install_rsyslog_nginx_conf {
 	# initiate rsyslog conf installation and validate compatibility 
-	install_rsyslog_conf
+	#install_rsyslog_conf
 
 	log "INFO" "Install nginx rsyslog config"
 	# validate nginx compatibility requirements are reached.

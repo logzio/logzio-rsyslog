@@ -84,7 +84,7 @@ fi
 # ---------------------------------------- 
 function install_rsyslog_file_conf {
 	# initiate rsyslog conf installation and validate compatibility 
-	install_rsyslog_conf
+	#install_rsyslog_conf
 
 	log "INFO" "Configure rsyslog for $RSYSLOG_FILE_FILENAME"
 

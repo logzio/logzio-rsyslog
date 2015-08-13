@@ -79,7 +79,7 @@ done
 # ---------------------------------------- 
 function install_rsyslog_apache_conf {
 	# initiate rsyslog conf installation and validate compatibility 
-	install_rsyslog_conf
+	#install_rsyslog_conf
 
 	log "INFO" "Install apache rsyslog config"
 
