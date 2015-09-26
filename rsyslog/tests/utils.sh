@@ -3,7 +3,8 @@
 function fresh_vagrent {
 	execute_cmd vagrant destroy -f
 	execute_cmd vagrant up
-    execute_cmd vagrant ssh -c "curl -sLO https://github.com/logzio/logzio-rsyslog/raw/master/dist/logzio-rsyslog.tar.gz && tar xzf logzio-rsyslog.tar.gz"
+    local branch=`git rev-parse --abbrev-ref HEAD`
+    execute_cmd vagrant ssh -c "curl -sLO https://github.com/logzio/logzio-rsyslog/raw/${branch}/dist/logzio-rsyslog.tar.gz && tar xzf logzio-rsyslog.tar.gz"
 }
 
 function run_logz {
