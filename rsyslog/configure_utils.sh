@@ -63,9 +63,9 @@ function is_ubuntu {
 }
 
 # ---------------------------------------- 
-# check if the dist is yam_based
+# check if the dist is yum_based
 # ---------------------------------------- 
-function is_yam_based {
+function is_yum_based {
 	YUM_BASED=$(command -v yum)
 	
 	if [ "$YUM_BASED" != "" ]; then
@@ -91,7 +91,7 @@ function is_apt_based {
 # check if the pckages are installed
 # ---------------------------------------- 
 function is_installed {
-	if is_yam_based; then
+	if is_yum_based; then
 		if yum list installed "$@" >/dev/null 2>&1; then
 			return 0
 		else

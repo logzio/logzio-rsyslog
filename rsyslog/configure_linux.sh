@@ -23,7 +23,7 @@ RSYSLOG_SPOOL_DIR=/var/spool/rsyslog
 RSYSLOG_SERVICE_NAME=rsyslog
 
 # minimum version of rsyslog to enable logging to logzio
-MIN_RSYSLOG_VERSION=5.8.0
+MIN_RSYSLOG_VERSION=${MIN_RSYSLOG_VERSION:=5.8.0}
 
 # this variable will hold the users syslog version
 CURRENT_RSYSLOG_VERSION=
@@ -164,7 +164,7 @@ function validate_network_tools_installed {
 # ----------------------------------------
 function install_network_tools {
 	log "INFO" "Trying to install nc (netcat)"
-	if is_yam_based; then
+	if is_yum_based; then
 		yum -y install nc &> /dev/null
 	elif is_apt_based; then
 		apt-get -y install netcat &> /dev/null
@@ -214,8 +214,7 @@ function validate_selinux_not_enabled {
 	if [ $? -ne 0 ]; then
 		log "INFO" "Selinux status is not enforced."
 	elif [ $(sudo getenforce | grep "Enforcing" | wc -l) -gt 0 ]; then
-		log "ERROR" "Selinux status is 'Enforcing'. Please disable it and start the rsyslog daemon manually."
-		exit 1
+		log "WARN" "Selinux status is 'Enforcing'. Please consider disable it and start the rsyslog daemon manually."
 	fi
 }
 
@@ -248,7 +247,7 @@ function setup_rsyslog {
 # ----------------------------------------
 function install_rsyslog {
 	log "INFO" "Trying to install rsyslog .. "
-	if is_yam_based; then
+	if is_yum_based; then
 		execute yum -y install rsyslog &> /dev/null
 	elif is_apt_based; then
 		execute apt-get -y install rsyslog &> /dev/null
