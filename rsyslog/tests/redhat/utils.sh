@@ -20,6 +20,30 @@ function install_nginx {
 	fi
 }
 
+function install_mysql {
+	execute_cmd vagrant ssh -c "sudo yum -y install mysql-server"
+	execute_cmd vagrant ssh -c "sudo yum -y install git"
+	execute_cmd vagrant ssh -c "sudo /sbin/service mysqld start"
+	execute_cmd vagrant ssh -c "git clone https://github.com/datacharmer/test_db.git"
+	execute_cmd vagrant ssh -c "echo 'general_log_file = /var/log/mysql/mysql.log' | sudo tee -a /etc/my.cnf"
+	execute_cmd vagrant ssh -c "echo 'general_log= 1' | sudo tee -a /etc/my.cnf"
+	execute_cmd vagrant ssh -c "echo 'log_slow_queries = /var/log/mysql/mysql-slow.log' | sudo tee -a /etc/my.cnf"
+	execute_cmd vagrant ssh -c "echo 'long_query_time = 1' | sudo tee -a /etc/my.cnf"
+	execute_cmd vagrant ssh -c "echo 'log-queries-not-using-indexes = 1' | sudo tee -a /etc/my.cnf"
+	execute_cmd vagrant ssh -c "cd test_db;mysql -u root -p123456 < employees.sql"
+	execute_cmd vagrant ssh -c "cd test_db;mysql -u root -p123456 -t < test_employees_md5.sql"
+	execute_cmd vagrant ssh -c "cd test_db;mysql -u root -p123456 employees -e 'SELECT * FROM employees LIMIT 10;'"
+	execute_cmd vagrant ssh -c "cd test_db;mysql -u root -p123456 employees -e 'SELECT * FROM employees;'"
+}
+
+function upgrade_rsyslog {
+	execute_cmd vagrant ssh -c "sudo yum -y install wget"
+	execute_cmd vagrant ssh -c "cd /etc/yum.repos.d/; sudo wget http://rpms.adiscon.com/v8-stable/rsyslog.repo"
+	execute_cmd vagrant ssh -c "sudo yum -y install rsyslog"
+	execute_cmd vagrant ssh -c "sudo yum update rsyslog"
+	execute_cmd vagrant ssh -c "sudo /etc/init.d/rsyslog restart"
+}
+
 function uninstall_rsyslog {
 	execute_cmd vagrant ssh -c "sudo yum -y remove rsyslog"
 }
@@ -41,7 +65,7 @@ function remvoe_nginx_service {
 }
 
 function delete_apache_logs {
-	execute_cmd vagrant ssh -c "sudo rm -fr /var/log/apache2"
+	execute_cmd vagrant ssh -c "sudo rm -fr /var/log/httpd"
 }
 
 function delete_nginx_logs {
@@ -49,11 +73,13 @@ function delete_nginx_logs {
 }
 
 function copy_apache_logs {
-	execute_cmd vagrant ssh -c "sudo cp -fr /var/log/apache2 ~/var/log/apache2"
+	execute_cmd vagrant ssh -c "sudo mkdir -p ~/var/log/httpd"
+	execute_cmd vagrant ssh -c "sudo cp -fr /var/log/httpd ~/var/log/"
 }
 
 function copy_nginx_logs {
-	execute_cmd vagrant ssh -c "sudo cp -fr /var/log/nginx ~/var/log/nginx"
+	execute_cmd vagrant ssh -c "sudo mkdir -p ~/var/log/nginx"
+	execute_cmd vagrant ssh -c "sudo cp -fr /var/log/nginx ~/var/log/"
 }
 
 function test_file_path {
