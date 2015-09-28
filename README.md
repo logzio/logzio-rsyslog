@@ -60,6 +60,15 @@ sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--a
 	- access `/var/log/nginx/access.log` (can be overrided using the option --accesslog)
 	- error `/var/log/nginx/error.log` (can be overrided using the option --errorlog)
 
+	- mysql
+
+	MySQL log files:
+	Configure rsyslog to monitor MySQL general, query slow-log and error log files, and ship them over to Logz.io
+	The script will attempt to resolve the location of the log files.
+	- general `/var/log/mysql/mysql.log` (can be overrided using the option --generallog)
+	- slow-log `/var/log/mysql/mysql-slow.log` (can be overrided using the option --slowlog)
+	- error `/var/log/mysql/error.log` (can be overrided using the option --errorlog)
+
 **-q | --quite** 
 
 	Interactive mode mode is disabled (enabled by default).
@@ -119,6 +128,14 @@ Monitor Nginx syslog:
 curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz
 tar xzf logzio-rsyslog.tar.gz
 sudo rsyslog/install.sh -t nginx -a "TOKEN" [--accesslog] [--errorlog] 
+```
+
+Monitor MySQL syslog:
+
+```bash
+curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz
+tar xzf logzio-rsyslog.tar.gz
+sudo rsyslog/install.sh -t mysql -a "TOKEN" [--generallog] [--slowlog] [--errorlog] 
 ```
 
 #### A General Linux log file:
