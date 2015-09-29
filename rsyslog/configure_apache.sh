@@ -106,7 +106,7 @@ function validate_apache_access_logs {
 
 	log "INFO" "Validating that apache access logs exist, and log files are accessible"
 
-	if is_yam_based; then
+	if is_yum_based; then
 		APACHE_ACCESS_LOG_FILE_NAME="access_log"
 	
 	elif is_apt_based; then
@@ -135,7 +135,7 @@ function validate_apache_error_logs {
 
 	log "INFO" "Validating that apache error logs exist, and log files are accessible"
 
-	if is_yam_based; then
+	if is_yum_based; then
 		APACHE_ERROR_LOG_FILE_NAME="error_log"
 	
 	elif is_apt_based; then
@@ -159,7 +159,7 @@ function validate_apache_error_logs {
 function validate_apache_service_name {
 	log "INFO" "Validating that apache is service name match the linux distribution"
 
-	if is_yam_based; then
+	if is_yum_based; then
 		APACHE_SERVICE_NAME="httpd"	
 	elif is_apt_based; then
 		APACHE_SERVICE_NAME="apache2"
@@ -226,8 +226,5 @@ function write_apache_conf {
 # ---------------------------------------- 
 # start
 # ---------------------------------------- 
-
-if [[ $INSTALL_TYPE == "apache" ]]; then
-	install_rsyslog_apache_conf
-fi
+install_rsyslog_apache_conf
 

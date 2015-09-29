@@ -20,7 +20,7 @@
 trap ctrl_c INT
 
 function ctrl_c()  {
-    echo "INFO" "Stopping execution. Bay bay..."
+    echo "INFO" "Stopping execution. Bye bye..."
     exit 1
 }
 
@@ -36,8 +36,9 @@ function usage {
 	echo "-t(type) Allowed values:"
 	echo "      1. linux"
 	echo "      2. apache"
-	echo "      3. nginx"
-	echo "      4. file"
+    echo "      3. nginx"
+	echo "      4. sql"
+	echo "      5. file"
 	echo
 
     exit $1
@@ -99,7 +100,7 @@ while :; do
 
         -q|--quiet)
             INTERACTIVE_MODE="false"
-            echo "[INFO]" "Interactive mode mode is disabled."
+            echo "[INFO]" "Interactive mode is disabled."
             ;;
 
         -t|--type)

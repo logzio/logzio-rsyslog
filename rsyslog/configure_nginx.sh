@@ -157,6 +157,4 @@ function write_nginx_conf {
 # ---------------------------------------- 
 # start
 # ---------------------------------------- 
-if [[ $INSTALL_TYPE == "nginx" ]]; then
-	install_rsyslog_nginx_conf
-fi
+install_rsyslog_nginx_conf

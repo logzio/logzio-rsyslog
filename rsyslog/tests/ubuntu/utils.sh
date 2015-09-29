@@ -23,6 +23,24 @@ function install_nginx {
 	fi
 }
 
+function install_mysql {
+	execute_cmd vagrant ssh -c "sudo apt-get update"
+	execute_cmd vagrant ssh -c "sudo apt-get -y install mysql-server git"
+	execute_cmd vagrant ssh -c "git clone https://github.com/datacharmer/test_db.git"
+	execute_cmd vagrant ssh -c "sudo cp -f /vagrant/tests/ubuntu/files/my.cnf /etc/mysql/my.cnf"
+	execute_cmd vagrant ssh -c "sudo service mysql restart"
+	execute_cmd vagrant ssh -c "cd test_db;mysql -u root -p123456 < employees.sql"
+	execute_cmd vagrant ssh -c "cd test_db;mysql -u root -p123456 -t < test_employees_md5.sql"
+	execute_cmd vagrant ssh -c "cd test_db;mysql -u root -p123456 employees -e 'SELECT * FROM employees LIMIT 10;'"
+	execute_cmd vagrant ssh -c "cd test_db;mysql -u root -p123456 employees -e 'SELECT * FROM employees;'"
+}
+
+function upgrade_rsyslog {
+	execute_cmd vagrant ssh -c "sudo add-apt-repository ppa:adiscon/v8-stable"
+	execute_cmd vagrant ssh -c "sudo apt-get update"
+	execute_cmd vagrant ssh -c "sudo apt-get -y install rsyslog"
+}
+
 function uninstall_rsyslog {
 	execute_cmd vagrant ssh -c "sudo apt-get -y remove rsyslog"
 	execute_cmd vagrant ssh -c "sudo apt-get -y purge rsyslog"

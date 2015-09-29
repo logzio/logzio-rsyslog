@@ -82,7 +82,7 @@ function test_configure_apache_custom_logs {
 	#delete logs ...
 	copy_apache_logs
 	# run rsyslog apache install
-	run_logz "-t apache --errorlog ~/var/log/apache2/$1 --accesslog ~/var/log/apache2/$2"
+	run_logz "-t apache --errorlog ~/var/log/httpd/$1 --accesslog ~/var/log/httpd/$2"
 }
 
 function test_configure_apache_logs_empty {
@@ -154,7 +154,23 @@ function test_configure_nginx_logs_empty {
 }
 
 
+# -----------------------
+# Tests - Mysql
+# -----------------------
 
+
+function test_configure_mysql {
+	# start fresh machine
+	fresh_vagrent
+
+	#upgrade rsyslog
+	upgrade_rsyslog
+
+	#install mysql and make some network traffic
+	install_mysql
+	# run rsyslog mysql install
+	run_logz "-t mysql"
+}
 
 # -----------------------
 # Tests - File

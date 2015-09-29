@@ -1,4 +1,4 @@
-# logzio-rsyslog 1.0.0
+# logzio-rsyslog
 
 Configure rsyslog to send verity of system log to [Logz.io](https://logz.io).
 Contains an intuitive and easy to use installation setup the will enable you to monitor your local system logs and/or any of the running daemon log files, and ship them over to [Logz.io](https://logz.io).  
@@ -18,7 +18,7 @@ curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslo
 ## Usage:
 
 ```bash
-sudo rsyslog/install.sh -t TYPE -a TOKEN [--quiet] [--filepath] [--filetag] [--accesslog] [--errorlog] 
+sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--accesslog] [--errorlog] 
 ```
 
 #### Script options:
@@ -46,21 +46,30 @@ sudo rsyslog/install.sh -t TYPE -a TOKEN [--quiet] [--filepath] [--filetag] [--a
 	Configure rsyslog to monitor Apache2 access and error log files, and ship them over to [Logz.io](https://logz.io)
 	The script will attempt to resolve the location of the log files according to the OS distribution.
 	For yum based distributions the log file will be mapped to:
-		- access `/var/log/httpd/access_log` (can be overrided using the option --accesslog)
-		- error `/var/log/httpd/error_log` (can be overrided using the option --errorlog)
+	- access `/var/log/httpd/access_log` (can be overrided using the option --accesslog)
+	- error `/var/log/httpd/error_log` (can be overrided using the option --errorlog)
 	For apt based distributions the log file will be mapped to:
-		- access `/var/log/apache2/access.log` (can be overrided using the option --accesslog)
-		- error `/var/log/apache2/error.log` (can be overrided using the option --errorlog)
+	- access `/var/log/apache2/access.log` (can be overrided using the option --accesslog)
+	- error `/var/log/apache2/error.log` (can be overrided using the option --errorlog)
 
 	- nginx
 
 	Nginx log files:
 	Configure rsyslog to monitor Nginx access and error log files, and ship them over to Logz.io
 	The script will attempt to resolve the location of the log files.
-		- access `/var/log/nginx/access.log` (can be overrided using the option --accesslog)
-		- error `/var/log/nginx/error.log` (can be overrided using the option --errorlog)
+	- access `/var/log/nginx/access.log` (can be overrided using the option --accesslog)
+	- error `/var/log/nginx/error.log` (can be overrided using the option --errorlog)
 
-**-q | --quiet** 
+	- mysql
+
+	MySQL log files:
+	Configure rsyslog to monitor MySQL general, query slow-log and error log files, and ship them over to Logz.io
+	The script will attempt to resolve the location of the log files.
+	- general `/var/log/mysql/mysql.log` (can be overrided using the option --generallog)
+	- slow-log `/var/log/mysql/mysql-slow.log` (can be overrided using the option --slowlog)
+	- error `/var/log/mysql/error.log` (can be overrided using the option --errorlog)
+
+**-q | --quite** 
 
 	Interactive mode mode is disabled (enabled by default).
 
@@ -75,10 +84,6 @@ The following option avilable only when using the `--type file` option
 **-tag| --filetag** 
 	
 	Attach a TAG value to a monitored file.
-
-**-c| --codec** 
-	
-	Default to text. The file content codec, currntly support text and json
 
 
 ### Example and use cases:
@@ -125,9 +130,18 @@ tar xzf logzio-rsyslog.tar.gz
 sudo rsyslog/install.sh -t nginx -a "TOKEN" [--accesslog] [--errorlog] 
 ```
 
+Monitor MySQL syslog:
+
+```bash
+curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz
+tar xzf logzio-rsyslog.tar.gz
+sudo rsyslog/install.sh -t mysql -a "TOKEN" [--generallog] [--slowlog] [--errorlog] 
+```
+
 #### A General Linux log file:
 
-Configure rsyslog to monitor a log file. It can monitor a single log file or a directory, and ship them over to Logz.io.
+	Configure rsyslog to monitor Apache2 access and error log files, and ship them over to [Logz.io](https://logz.io)
+Configure rsyslog to monitor a log. It can monitor a single log file or a directory, and ship them over to Logz.io.
 In case of directory all first level files will be monitored.
 
 In the following sample please replace:
@@ -138,7 +152,7 @@ In the following sample please replace:
 ```bash
 curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslog.tar.gz
 tar xzf logzio-rsyslog.tar.gz
-sudo rsyslog/install.sh -t file -a "TOKEN" -p "FILE" -tag "APP_NAME" 
+sudo rsyslog/install.sh -t file -a "TOKEN" -f "FILE" --tag "APP_NAME" [--filepath] [--filetag] 
 ```
 
 

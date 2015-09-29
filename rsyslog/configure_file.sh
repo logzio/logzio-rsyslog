@@ -230,7 +230,4 @@ function write_file_conf {
 # ---------------------------------------- 
 # start
 # ---------------------------------------- 
-
-if [[ $INSTALL_TYPE == "file" ]]; then
-	install_rsyslog_file_conf
-fi
+install_rsyslog_file_conf
