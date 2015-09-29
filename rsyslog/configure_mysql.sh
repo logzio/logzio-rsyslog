@@ -17,7 +17,7 @@ source $LOGZ_DIR/configure_linux.sh
 MYSQL_SERVICE_NAME="mysql"
 
 # The name of logzio syslog conf file
-RSYSLOG_MYSQL_FILENAME="21-logzio-mysql-error.conf"
+RSYSLOG_MYSQL_FILENAME="21-logzio-mysql.conf"
 RSYSLOG_MYSQL_SLOW_FILENAME="21-logzio-mysql-slow.conf"
 RSYSLOG_MYSQL_ERROR_FILENAME="21-logzio-mysql-error.conf"
 
