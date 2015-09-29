@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # minimum version of rsyslog to enable logging to logzio
-export MIN_RSYSLOG_VERSION=7.5.3
+# export MIN_RSYSLOG_VERSION=7.5.3
 
 # ---------------------------------------- 
 # Setup dependencies
