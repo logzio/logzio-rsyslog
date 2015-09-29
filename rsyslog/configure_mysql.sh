@@ -170,7 +170,7 @@ function validate_mysql_compatibility {
 # write the mysql rsyslog conf file
 # ----------------------------------------
 function write_mysql_conf_files {
-	if [ ! -f $MYSQL_LOG_PATH ]; then
+	if [ -f $MYSQL_LOG_PATH ]; then
 		log "INFO" "Write the mysql rsyslog conf file: $RSYSLOG_MYSQL_FILENAME"
 
 		write_mysql_conf $MYSQL_LOG_PATH $RSYSLOG_MYSQL_FILENAME
@@ -179,7 +179,7 @@ function write_mysql_conf_files {
 		validate_rsyslog_logzio_installation ${RSYSLOG_MYSQL_FILENAME}
 	fi
 
-	if [ ! -f $MYSQL_SLOW_LOG_PATH ]; then
+	if [ -f $MYSQL_SLOW_LOG_PATH ]; then
 		log "INFO" "Write the mysql rsyslog conf file: $RSYSLOG_MYSQL_SLOW_FILENAME"
 
 		write_mysql_conf $MYSQL_SLOW_LOG_PATH $RSYSLOG_MYSQL_SLOW_FILENAME
@@ -188,7 +188,7 @@ function write_mysql_conf_files {
 		validate_rsyslog_logzio_installation ${RSYSLOG_MYSQL_SLOW_FILENAME}
 	fi
 
-	if [ ! -f $MYSQL_ERORR_LOG_PATH ]; then
+	if [ -f $MYSQL_ERORR_LOG_PATH ]; then
 		log "INFO" "Write the mysql rsyslog conf file: $RSYSLOG_MYSQL_ERROR_FILENAME"
 
 		write_mysql_conf $MYSQL_ERORR_LOG_PATH $RSYSLOG_MYSQL_ERROR_FILENAME
