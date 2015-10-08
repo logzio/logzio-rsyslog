@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # minimum version of rsyslog to enable logging to logzio
-# export MIN_RSYSLOG_VERSION=7.5.3
+export MIN_RSYSLOG_VERSION=7.5.3
 
 # ---------------------------------------- 
 # Setup dependencies
@@ -116,7 +116,9 @@ function set_mysql_defaults {
 # and validate compatibility 
 # ---------------------------------------- 
 function install_rsyslog_mysql_conf {
-	# initiate rsyslog conf installation and validate compatibility 
+	# copy plugins
+	copy_plugins	
+
 	# install_rsyslog_conf
 	set_mysql_defaults
 
