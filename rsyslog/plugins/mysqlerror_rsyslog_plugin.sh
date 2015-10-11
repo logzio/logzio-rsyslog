@@ -7,7 +7,7 @@ LOG_LINE=""
 while read line
 do
 
-  regex='[0-9][0-9][0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]'
+  regex='[0-9][0-9][0-9][0-9][0-9][0-9]\s+?([0-9])*[0-9]:[0-9][0-9]:[0-9][0-9]'
 
   if [[ $line =~ $regex ]] && [[ $LOG_LINE != "" ]]; then
         echo "[$TOKEN][type=$TYPE]$LOG_LINE" | nc listener.logz.io 8010

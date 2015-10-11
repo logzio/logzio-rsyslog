@@ -8,7 +8,7 @@ while read line
 do
 
   regex='User@Host:'
-  ignore='Time: [0-9][0-9][0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]'
+  ignore='Time: [0-9][0-9][0-9][0-9][0-9][0-9]\s+?([0-9])*[0-9]:[0-9][0-9]:[0-9][0-9]'
   if [[ $line =~ $ignore ]]; then
         echo $line > /dev/null
   elif [[ $line =~ $regex ]] && [[ $LOG_LINE != "" ]]; then
