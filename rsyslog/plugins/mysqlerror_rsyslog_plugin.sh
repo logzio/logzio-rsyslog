@@ -3,19 +3,30 @@
 TOKEN=$1
 TYPE=$2
 LOG_LINE=""
-
+echo "TOKEN IS $TOKEN and TYPE IS $TYPE"
 while read line
 do
 
-  regex='[0-9][0-9][0-9][0-9][0-9][0-9]\s+?([0-9])*[0-9]:[0-9][0-9]:[0-9][0-9]'
+    regex='^([0-9][0-9][0-9][0-9][0-9][0-9]\s+?([0-9])*[0-9]:[0-9][0-9]:[0-9][0-9]|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]\s+?([0-9])*[0-9]:[0-9][0-9]:[0-9][0-9]).*'
+    
+    echo "loop start $line"
 
-  if [[ $line =~ $regex ]] && [[ $LOG_LINE != "" ]]; then
-        echo "[$TOKEN][type=$TYPE]$LOG_LINE" | nc listener.logz.io 8010
+    if [[ $LOG_LINE == "" ]]; then
+        echo "loop first catch"
         LOG_LINE=$(echo $line)
-  elif [[ $LOG_LINE == "" ]]; then
-        LOG_LINE=$(echo $line)
-  else
+   else
+        echo "loop adding"
+
         LOG_LINE=$(echo $LOG_LINE LOGZIO_LF $line)
-  fi
+   fi
+
+   if [[ $line =~ $regex ]]; then
+
+         LOG_LINE=$(echo $line)
+         echo "[$TOKEN][type=$TYPE]$LOG_LINE"
+        echo "[$TOKEN][type=$TYPE]$LOG_LINE" | nc listener.logz.io 8010
+    fi
+
+    echo "loop end"
 
 done < /dev/stdin
