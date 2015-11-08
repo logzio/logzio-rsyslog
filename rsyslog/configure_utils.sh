@@ -397,6 +397,17 @@ function service_restart {
 
 
 # ---------------------------------------- 
+# copy logzio rsyslog plugins
+# ---------------------------------------- 
+function copy_plugins {
+	log "DEBUG" "copy plugins ..."
+	mkdir -p /opt/logzio
+	cp -ar ${LOGZ_DIR}/plugins /opt/logzio
+	chmod +x -R /opt/logzio/plugins
+}
+
+
+# ---------------------------------------- 
 # cleanup: delete logzio dir
 # ---------------------------------------- 
 function cleanup {
