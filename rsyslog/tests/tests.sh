@@ -82,7 +82,7 @@ function test_configure_apache_custom_logs {
 	#delete logs ...
 	copy_apache_logs
 	# run rsyslog apache install
-	run_logz "-t apache --errorlog ~/var/log/httpd/$1 --accesslog ~/var/log/httpd/$2"
+	run_logz "-t apache --errorlog $1 --accesslog $2"
 }
 
 function test_configure_apache_logs_empty {

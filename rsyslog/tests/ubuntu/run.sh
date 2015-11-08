@@ -27,7 +27,7 @@ pushd ../.. > /dev/null
 		execute_fail_test test_configure_rsyslog_on_network
 
 		execute_success_test test_configure_apache
-		execute_success_test test_configure_apache_custom_logs "error.log" "access.log"
+		execute_success_test test_configure_apache_custom_logs "~/var/log/apache2/error.log" "~/var/log/apache2/access.log"
 		
 		execute_success_test test_configure_nginx
 		execute_success_test test_configure_nginx_custom_logs
