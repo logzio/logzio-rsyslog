@@ -283,10 +283,10 @@ function validate_rsyslog_is_running {
 		execute sudo service $RSYSLOG_SERVICE_NAME start
 	fi
 	
-	if [ $(ps -A | grep $RSYSLOG_SERVICE_NAME | wc -l) -gt 1 ]; then
-		log "ERROR" "Multiple $RSYSLOG_SERVICE_NAME are running."
-		exit 1
-	fi
+	#if [ $(ps -A | grep $RSYSLOG_SERVICE_NAME | wc -l) -gt 1 ]; then
+	#	log "ERROR" "Multiple $RSYSLOG_SERVICE_NAME are running."
+	#	exit 1
+	#fi
 }
 
 
