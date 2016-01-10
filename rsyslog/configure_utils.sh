@@ -39,6 +39,15 @@ function execute {
     fi
 }
 
+# ---------------------------------------- 
+# check if element in array
+# ---------------------------------------- 
+function containsElement {
+	local e
+	for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+	return 1
+}
+
 
 # ---------------------------------------- 
 # validate that the user has root privileges

@@ -34,11 +34,7 @@ function usage {
 	echo "$(basename $0) -a auth_token -t type [-q suppress prompts] [-v verbose] [-h for help]"
 	echo
 	echo "-t(type) Allowed values:"
-	echo "      1. linux"
-	echo "      2. apache"
-    echo "      3. nginx"
-	echo "      4. sql"
-	echo "      5. file"
+    printf '%s\n' "${KNOWN_TYPES[@]}"
 	echo
 
     exit $1
@@ -82,6 +78,16 @@ export LOG_LEVEL=2
 
 # logz.io working dir
 export LOGZ_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+# list all known types
+export KNOWN_TYPES=()
+
+for f in `find $LOGZ_DIR -type f`; do
+    KNOWN_TYPE=$(basename $f .sh | cut -f 2 -d '_')
+    if [[ $f != "utils" ]]; then
+        KNOWN_TYPES+=( $KNOWN_TYPE )
+    fi
+done
 
 
 # ---------------------------------------- 
@@ -164,12 +170,27 @@ if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
     fi
     log "DEBUG" "File codec is: $CODEC_TYPE"
 
-    # execute
+
+    # ---------------------------------------- 
+    # Backwards computably
+    # ---------------------------------------- 
+    containsElement "${INSTALL_TYPE}" "${KNOWN_TYPES[@]}"
+    
+    # if $INSTALL_TYPE do not match, set install type to file and create addtional argument --tag with the value of the original install type. 
+    if [ $? -ne 0 ]; then
+        ADDITIONAL_ARGS="--filetag ${INSTALL_TYPE}"
+        INSTALL_TYPE="file"
+    fi
+
+
     log "DEBUG" "File to execute: $LOGZ_DIR/configure_${INSTALL_TYPE}.sh"
 
     if [[ -f $LOGZ_DIR/configure_${INSTALL_TYPE}.sh ]]; then
         log "INFO" "Executing: configure ${INSTALL_TYPE}"
-        source $LOGZ_DIR/configure_${INSTALL_TYPE}.sh $@
+        
+        # execute
+        # and, make sure to pass $ADDITIONAL_ARGS!
+        source $LOGZ_DIR/configure_${INSTALL_TYPE}.sh $@ $ADDITIONAL_ARGS
 
         # To be on the safe side, let's restart again
         service_restart
