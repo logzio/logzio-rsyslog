@@ -34,7 +34,12 @@ function usage {
 	echo "$(basename $0) -a auth_token -t type [-q suppress prompts] [-v verbose] [-h for help]"
 	echo
 	echo "-t(type) Allowed values:"
-    printf '%s\n' "${KNOWN_TYPES[@]}"
+    for f in `find $LOGZ_DIR/configure_* -type f`; do
+        KNOWN_TYPE=$(basename $f .sh | cut -f 2 -d '_')
+        if [[ $KNOWN_TYPE != "utils" ]] && [[ $KNOWN_TYPE != "file" ]]; then
+            echo "- $KNOWN_TYPE"
+        fi
+    done
 	echo
 
     exit $1
@@ -84,7 +89,7 @@ export KNOWN_TYPES=()
 
 for f in `find $LOGZ_DIR/configure_* -type f`; do
     KNOWN_TYPE=$(basename $f .sh | cut -f 2 -d '_')
-    if [[ $KNOWN_TYPE != "utils" ]] && [[ $KNOWN_TYPE != "file" ]]; then
+    if [[ $KNOWN_TYPE != "utils" ]]; then
         KNOWN_TYPES+=( $KNOWN_TYPE )
     fi
 done
