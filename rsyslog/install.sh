@@ -82,9 +82,9 @@ export LOGZ_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # list all known types
 export KNOWN_TYPES=()
 
-for f in `find $LOGZ_DIR -type f`; do
+for f in `find $LOGZ_DIR/configure_* -type f`; do
     KNOWN_TYPE=$(basename $f .sh | cut -f 2 -d '_')
-    if [[ $f != "utils" ]]; then
+    if [[ $KNOWN_TYPE != "utils" ]] && [[ $KNOWN_TYPE != "file" ]]; then
         KNOWN_TYPES+=( $KNOWN_TYPE )
     fi
 done
