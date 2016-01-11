@@ -33,16 +33,17 @@ while :; do
     case $1 in
 		-p | --filepath ) shift
 			FILE_PATH=$1
-
+			
 			# incase the file path is a wildcard ...
 			if contains_wildcard $FILE_PATH; then
+			
+				FILE_DIRNAME=$(dirname $FILE_PATH)
 
-				FILE_BASENAME=$(basename $FILE_PATH)
-
-				if ! contains_wildcard $FILE_BASENAME; then
-					log "ERROR" "Wildcard path is only allowed on the file name level!"
-					exit 1
+				if contains_wildcard $FILE_DIRNAME; then
+				    log "ERROR" "Wildcard path is only allowed on the file name level!"
+				    exit 1
 				fi
+				MONITOR_WILDCARD="true"
 
 				# set minimum version of rsyslog to enable logging to logzio
 				export MIN_RSYSLOG_VERSION=7.5.3
@@ -113,7 +114,10 @@ function install_rsyslog_file_conf {
 
 	if [[ $MONITOR_DIRECTORY == "true" ]]; then
 		monitor_directory
-	else
+	elif [[ $MONITOR_WILDCARD == "true" ]]; then
+		echo "monitor_wildcard ... $FILE_PATH"
+		monitor_wildcard $FILE_PATH
+	else	
 		monitor_file $FILE_PATH "false"
 	fi
 
@@ -204,6 +208,10 @@ function monitor_file {
 	fi
 
 	write_file_conf $1 $2
+}
+
+function monitor_wildcard {
+	write_file_conf $1 "false"
 }
 
 # ----------------------------------------
