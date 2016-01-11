@@ -1,12 +1,6 @@
 #!/bin/bash
 
 # ---------------------------------------- 
-# Setup dependencies
-# ---------------------------------------- 
-source $LOGZ_DIR/configure_linux.sh
-
-
-# ---------------------------------------- 
 # File monitor script usage info
 # ---------------------------------------- 
 function usage-file {
@@ -38,18 +32,38 @@ FILE_TAG=""
 while :; do
     case $1 in
 		-p | --filepath ) shift
-			FILE_PATH=$(readlink -f "$1")
+			FILE_PATH=$1
 
-			if [ -f "$FILE_PATH" ];then
-				log "INFO" "Monitoring file: $FILE_PATH"
+			# incase the file path is a wildcard ...
+			if contains_wildcard $FILE_PATH; then
 
-			elif is_directory "$FILE_PATH"; then
-				MONITOR_DIRECTORY="true"
-				log "INFO" "Directory to monitor: $FILE_PATH"
+				FILE_BASENAME=$(basename $FILE_PATH)
 
+				if ! contains_wildcard $FILE_BASENAME; then
+					log "ERROR" "Wildcard path is only allowed on the file name level!"
+					exit 1
+				fi
+
+				# set minimum version of rsyslog to enable logging to logzio
+				export MIN_RSYSLOG_VERSION=7.5.3
+
+			# incase the file path is a path to file name ...
 			else
-				log "ERROR" "Cannot access $FILE_PATH: No such file or directory"
-				exit 1
+
+				FILE_PATH=$(readlink -f "$1")
+
+				if [ -f "$FILE_PATH" ];then
+					log "INFO" "Monitoring file: $FILE_PATH"
+
+				elif is_directory "$FILE_PATH"; then
+					MONITOR_DIRECTORY="true"
+					log "INFO" "Directory to monitor: $FILE_PATH"
+
+				else
+					log "ERROR" "Cannot access $FILE_PATH: No such file or directory"
+					exit 1
+				fi
+
 			fi
 			;;
 		-tag| --filetag ) shift
@@ -66,6 +80,12 @@ while :; do
 
     shift
 done
+
+
+# ---------------------------------------- 
+# Setup dependencies
+# ---------------------------------------- 
+source $LOGZ_DIR/configure_linux.sh
 
 
 # ---------------------------------------- 
@@ -91,7 +111,7 @@ function install_rsyslog_file_conf {
 	# validate that the file name dose not contain spaces, and it exist
 	validate_monitor_path
 
-	if is_directory $FILE_PATH; then
+	if [[ $MONITOR_DIRECTORY == "true" ]]; then
 		monitor_directory
 	else
 		monitor_file $FILE_PATH "false"

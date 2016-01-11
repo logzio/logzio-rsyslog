@@ -48,6 +48,19 @@ function containsElement {
 	return 1
 }
 
+# ---------------------------------------- 
+# check if string contain wildcard
+# ---------------------------------------- 
+function contains_wildcard() {
+	wildcard='*'
+
+	if [[ $1 == *"${wildcard}"* ]]; then
+		return 0
+	fi
+
+	return 1
+}
+
 
 # ---------------------------------------- 
 # validate that the user has root privileges
