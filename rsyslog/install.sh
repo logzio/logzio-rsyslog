@@ -31,7 +31,7 @@ function usage {
     echo "Version: $SCRIPT_VERSION" 
     echo
     echo "Usage:"
-	echo "$(basename $0) -a auth_token -t type [-q suppress prompts] [-v verbose] [-h for help]"
+	echo "$(basename $0) -a auth_token -t type [-q suppress prompts] [-v verbose] [-c codec] [-h for help]"
 	echo
 	echo "-t(type) Allowed values:"
     for f in `find $LOGZ_DIR/configure_* -type f`; do
@@ -200,7 +200,7 @@ if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
     
     # if $INSTALL_TYPE do not match, set install type to file and create addtional argument --tag with the value of the original install type. 
     if [ $? -ne 0 ]; then
-        ADDITIONAL_ARGS="--filetag ${INSTALL_TYPE}"
+        ADDITIONAL_ARGS="-tag ${INSTALL_TYPE}"
         INSTALL_TYPE="file"
     fi
 

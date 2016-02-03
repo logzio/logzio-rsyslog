@@ -10,7 +10,7 @@ function usage-file {
     echo "Version: $SCRIPT_VERSION" 
     echo
     echo "Usage:"
-	echo "install.sh -a auth_token --type type --filepath filepath [-q suppress prompts] [-v verbose] [-h for help]"
+	echo "install.sh -a auth_token --type type --filepath filepath [-q suppress prompts] [-v verbose] [-c codec] [-h for help]"
 	echo
 	echo
 
