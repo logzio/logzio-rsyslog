@@ -94,6 +94,7 @@ for f in `find $LOGZ_DIR/configure_* -type f`; do
     fi
 done
 
+options=()  # the buffer array for the parameters
 
 # ---------------------------------------- 
 # script arguments
@@ -126,6 +127,17 @@ while :; do
             fi
             ;;
         
+        --hostname)
+            if [ -n "$2" ]; then
+                MACHINE_HOSTNAME=$2
+                echo "[INFO]" "Hostname is '$MACHINE_HOSTNAME'."
+                shift 2
+                continue
+            else
+                echo "[ERROR]" "--hostname requires a non-empty option argument."
+                usage 1
+            fi
+            ;;
         -c|--codec)
             if [ -n "$2" ]; then
                 CODEC_TYPE=$2
@@ -148,14 +160,19 @@ while :; do
             ;;
 
         --) # End of all options.
-            shift
-            break
+            options+=("$1")
             ;;
         *)  # Default case: If no more options then break out of the loop.
-            break
+            options+=("$1")
+            ;;
     esac
 
     shift
+
+    if [ -z $1 ]; then
+        break
+    fi
+
 done
 
 
@@ -195,7 +212,7 @@ if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
         
         # execute
         # and, make sure to pass $ADDITIONAL_ARGS!
-        source $LOGZ_DIR/configure_${INSTALL_TYPE}.sh $@ $ADDITIONAL_ARGS
+        source $LOGZ_DIR/configure_${INSTALL_TYPE}.sh "${options[@]}" $ADDITIONAL_ARGS
 
         # To be on the safe side, let's restart again
         service_restart

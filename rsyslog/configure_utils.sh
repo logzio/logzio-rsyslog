@@ -30,7 +30,7 @@ function log {
 # exit with status code on error
 # ---------------------------------------- 
 function execute {
-	log "DEBUG" "Running command: $@"
+	#log "DEBUG" "Running command: $@"
     "$@"
     local status=$?
     if [ $status -ne 0 ]; then
