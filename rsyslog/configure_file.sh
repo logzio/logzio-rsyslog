@@ -30,14 +30,14 @@ FILE_PATH=""
 while :; do
     case $1 in
 		-p | --filepath ) shift
-			FILE_PATH=$1
+			FILE_PATH="$1"
 			
 			# incase the file path is a wildcard ...
-			if contains_wildcard $FILE_PATH; then
+			if contains_wildcard "$FILE_PATH"; then
 			
-				FILE_DIRNAME=$(dirname $FILE_PATH)
+				FILE_DIRNAME=$(dirname "$FILE_PATH")
 
-				if contains_wildcard $FILE_DIRNAME; then
+				if contains_wildcard "$FILE_DIRNAME"; then
 				    log "ERROR" "Wildcard path is only allowed on the file name level!"
 				    exit 1
 				fi
@@ -92,7 +92,7 @@ source $LOGZ_DIR/configure_linux.sh
 # ---------------------------------------- 
 RSYSLOG_FILE_FILENAME="21-logzio-${CODEC_TYPE}-file-${FILE_TAG}.conf"
 
-if [[ -z $FILE_TAG ]] || [[ -z $FILE_PATH ]]; then
+if [[ -z $FILE_TAG ]] || [[ -z "$FILE_PATH" ]]; then
 	usage-file 1
 fi
 
@@ -113,10 +113,9 @@ function install_rsyslog_file_conf {
 	if [[ $MONITOR_DIRECTORY == "true" ]]; then
 		monitor_directory
 	elif [[ $MONITOR_WILDCARD == "true" ]]; then
-		echo "monitor_wildcard ... $FILE_PATH"
-		monitor_wildcard $FILE_PATH
+		monitor_wildcard "$FILE_PATH"
 	else	
-		monitor_file $FILE_PATH "false"
+		monitor_file "$FILE_PATH" "false"
 	fi
 
 	# validate that logs are been sent
@@ -135,7 +134,7 @@ function install_rsyslog_file_conf {
 # ---------------------------------------- 
 function validate_monitor_path {
 	pattern=" |'"
-	if [[ $FILE_PATH =~ $pattern ]]; then
+	if [[ "$FILE_PATH" =~ $pattern ]]; then
 		log "ERROR" "White spaces are not allowed, File path: $FILE_PATH"
 		exit 1
 	fi
@@ -179,11 +178,11 @@ function validate_file {
 function monitor_directory {
 	log "INFO" "INFO" "Configuring all files under the directory: $FILE_PATH"
 	log "INFO" "Listing files:"
-	ls -1 $FILE_PATH
+	ls -1 "$FILE_PATH"
 
 	local append="false"
 	
-	for file in $(find $FILE_PATH -type f -name '*')
+	for file in $(find "$FILE_PATH" -type f -name '*')
 	do	
 		monitor_file $file $append
 
@@ -197,7 +196,7 @@ function monitor_directory {
 }
 
 function monitor_file {
-	validate_file $1
+	validate_file "$1"
 
 	local is_valid=$?
 
@@ -205,11 +204,11 @@ function monitor_file {
 		return $is_valid
 	fi
 
-	write_file_conf $1 $2
+	write_file_conf "$1" $2
 }
 
 function monitor_wildcard {
-	write_file_conf $1 "false"
+	write_file_conf "$1" "false"
 }
 
 # ----------------------------------------
@@ -217,7 +216,7 @@ function monitor_wildcard {
 # ----------------------------------------
 function write_file_conf {
 	local append=$2
-	local monitored_file_path=$1
+	local monitored_file_path="$1"
 	local monitored_file_normilized_name=$(echo ${1##*/} | tr . - | tr _ -);
 	local monitored_file_tag=${monitored_file_normilized_name}-$FILE_TAG
 	local monitored_state_file=stat-logzio-$(echo -n "$monitored_file_normilized_name" | md5sum | tr -d ' ')$FILE_TAG
