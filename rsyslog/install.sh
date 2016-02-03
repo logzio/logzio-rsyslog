@@ -83,6 +83,7 @@ export LOG_LEVEL=2
 # logz.io working dir
 export LOGZ_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+options=()  # the buffer array for the parameters
 
 # ---------------------------------------- 
 # script arguments
@@ -137,14 +138,18 @@ while :; do
             ;;
 
         --) # End of all options.
-            shift
-            break
+            options+=("$1")
             ;;
-        *)  # Default case: If no more options then break out of the loop.
-            break
+        *) # Default case: If no more options then break out of the loop.
+            options+=("$1")
+            ;;
     esac
 
     shift
+
+    if [ -z $1 ]; then
+        break
+    fi
 done
 
 
@@ -169,7 +174,7 @@ if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
 
     if [[ -f $LOGZ_DIR/configure_${INSTALL_TYPE}.sh ]]; then
         log "INFO" "Executing: configure ${INSTALL_TYPE}"
-        source $LOGZ_DIR/configure_${INSTALL_TYPE}.sh $@
+        source $LOGZ_DIR/configure_${INSTALL_TYPE}.sh "${options[@]}"
 
         # To be on the safe side, let's restart again
         service_restart
