@@ -201,6 +201,7 @@ if [ "$USER_TOKEN" != "" ] && [ "$INSTALL_TYPE" != "" ]; then
     # if $INSTALL_TYPE do not match, set install type to file and create addtional argument --tag with the value of the original install type. 
     if [ $? -ne 0 ]; then
         ADDITIONAL_ARGS="-tag ${INSTALL_TYPE}"
+        export FILE_TAG=$INSTALL_TYPE
         INSTALL_TYPE="file"
     fi
 
