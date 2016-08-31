@@ -142,6 +142,7 @@ function write_nginx_conf {
 	log "DEBUG" "Log conf file template path: ${rsyslog_tmplate}"
 
 	execute sed -i "s|USER_TOKEN|${USER_TOKEN}|g" ${rsyslog_tmplate}
+	execute sed -i "s|LISTENER_HOST|${LISTENER_HOST}|g" ${rsyslog_tmplate}
 	execute sed -i "s|RSYSLOG_SPOOL_DIR|${RSYSLOG_SPOOL_DIR}|g" ${rsyslog_tmplate}
 	execute sed -i "s|NGINX_ACCESS_LOG_PATH|${NGINX_ACCESS_LOG_PATH}|g" ${rsyslog_tmplate}
 	execute sed -i "s|NGINX_ERORR_LOG_PATH|${NGINX_ERORR_LOG_PATH}|g" ${rsyslog_tmplate}

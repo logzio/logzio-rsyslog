@@ -31,7 +31,7 @@ function usage {
     echo "Version: $SCRIPT_VERSION" 
     echo
     echo "Usage:"
-	echo "$(basename $0) -a auth_token -t type [-q suppress prompts] [-v verbose] [-h for help]"
+	echo "$(basename $0) -l logzio_listener -a auth_token -t type [-q suppress prompts] [-v verbose] [-h for help]"
 	echo
 	echo "-t(type) Allowed values:"
 	echo "      1. linux"
@@ -70,6 +70,9 @@ export INSTALL_TYPE=""
 
 # the user's authentication token, this is a mandatory input
 export USER_TOKEN=""
+
+# hostname for logz.io listener
+export LISTENER_HOST="${LISTENER_HOST:=listener.logz.io}"
 
 # the log's file codec,default to text (allowed values text, json)
 export CODEC_TYPE=""
@@ -115,7 +118,16 @@ while :; do
                 usage 1
             fi
             ;;
-        
+
+        -l|--listener)
+            if [ -n "$2" ]; then
+                LISTENER_HOST=$2
+                echo "[INFO]" "The listener address is '$LISTENER_HOST'."
+                shift 2
+                continue
+            fi
+            ;;
+
         -c|--codec)
             if [ -n "$2" ]; then
                 CODEC_TYPE=$2

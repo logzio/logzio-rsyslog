@@ -218,6 +218,7 @@ function write_mysql_conf {
 	log "DEBUG" "Log conf file template path: ${rsyslog_tmplate_path}"
 
 	execute sed -i "s|USER_TOKEN|${USER_TOKEN}|g" ${rsyslog_tmplate_path}
+	execute sed -i "s|LISTENER_HOST|${LISTENER_HOST}|g" ${rsyslog_tmplate_path}
 	execute sed -i "s|RSYSLOG_SPOOL_DIR|${RSYSLOG_SPOOL_DIR}|g" ${rsyslog_tmplate_path}
 	execute sed -i "s|PATH_TO_FILE|${mysql_log_path}|g" ${rsyslog_tmplate_path}
 

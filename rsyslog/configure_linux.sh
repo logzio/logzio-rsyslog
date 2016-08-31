@@ -34,9 +34,6 @@ LOGZ_CONF_DIR=${LOGZ_DIR}/confs/${MIN_RSYSLOG_VERSION}
 # the name of the linux distribution
 LINUX_DIST=
 
-# hostname for logz.io endpoint
-LISTENER_HOST=listener.logz.io
-
 # port for logz.io endpoint
 LISTENER_PORT=5000
 
@@ -350,6 +347,7 @@ function write_linux_conf {
 	log "DEBUG" "Log conf file template path: ${rsyslog_tmplate}"
 
 	execute sed -i "s|USER_TOKEN|${USER_TOKEN}|g" ${rsyslog_tmplate}
+	execute sed -i "s|LISTENER_HOST|${LISTENER_HOST}|g" ${rsyslog_tmplate}
 	execute sed -i "s|RSYSLOG_SPOOL_DIR|${RSYSLOG_SPOOL_DIR}|g" ${rsyslog_tmplate}
 
 	write_conf ${RSYSLOG_LINUX_FILENAME}

@@ -209,6 +209,7 @@ function write_file_conf {
 	execute cp -f $rsyslog_tmplate $tmp_rsyslog_tmplate
 
 	execute sed -i "s|USER_TOKEN|${USER_TOKEN}|g" ${tmp_rsyslog_tmplate}
+	execute sed -i "s|LISTENER_HOST|${LISTENER_HOST}|g" ${tmp_rsyslog_tmplate}
 	execute sed -i "s|RSYSLOG_SPOOL_DIR|${RSYSLOG_SPOOL_DIR}|g" ${tmp_rsyslog_tmplate}
 	execute sed -i "s|PATH_TO_FILE|${monitored_file_path}|g" ${tmp_rsyslog_tmplate}
 	execute sed -i "s|FILE_TAG_NAME|${monitored_file_tag}|g" ${tmp_rsyslog_tmplate}
