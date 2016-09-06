@@ -13,7 +13,7 @@ source ./utils.sh
 # -----------------------
 
 pushd ../.. > /dev/null
-	dists=("ubuntu/trusty64" "ubuntu/precise64")
+	dists=("ubuntu/trusty64")
 
 	for dist in ${dists[@]}; do
 		export VAGRANT_BOX="$dist"

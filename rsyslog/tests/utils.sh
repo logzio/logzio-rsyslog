@@ -9,7 +9,7 @@ function fresh_vagrent {
 }
 
 function run_logz {
-    vagrant ssh -c "sudo /home/vagrant/rsyslog/install.sh -a SSETBtwsmDgbktBfrPLAlkDvoydgIutM $@"
+    vagrant ssh -c "sudo /home/vagrant/rsyslog/install.sh -l listener-eu.logz.io -a grKWxXQYhaPLPISXCgMFYBjPWIzXrvop $@"
 }
 
 function execute_cmd {
