@@ -23,6 +23,10 @@ sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--a
 
 #### Script options:
 
+**-l | --listener (optional)**
+
+	Logz.io listener hostname.
+
 **-a | --authtoken** 
 	
 	Logz.io customer authentication token.

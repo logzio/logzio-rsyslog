@@ -18,7 +18,7 @@ do
    if [[ $line =~ $regex ]]; then
 
         LOG_LINE=$(echo $line) 
-        echo "[$TOKEN][type=$TYPE]$LOG_LINE" | nc listener.logz.io 8010
+        echo "[$TOKEN][type=$TYPE]$LOG_LINE" | nc $LISTENER_HOST 8010
     fi
 
 done < /dev/stdin

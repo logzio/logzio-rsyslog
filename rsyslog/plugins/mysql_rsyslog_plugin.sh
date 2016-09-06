@@ -11,7 +11,7 @@ do
   quit_statement=$(echo $line | grep Quit | wc -l)
 
   if [[ $line =~ $regex ]] && [[ $LOG_LINE != "" ]] && [[ $quit_statement -eq 0 ]]; then
-        echo "[$TOKEN][type=$TYPE]$LOG_LINE" | nc listener.logz.io 8010
+        echo "[$TOKEN][type=$TYPE]$LOG_LINE" | nc $LISTENER_HOST 8010
         LOG_LINE=$(echo $line)
   elif [[ $LOG_LINE == "" ]]; then
         LOG_LINE=$(echo $line)

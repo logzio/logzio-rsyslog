@@ -12,7 +12,7 @@ do
   if [[ $line =~ $ignore ]]; then
         echo $line > /dev/null
   elif [[ $line =~ $regex ]] && [[ $LOG_LINE != "" ]]; then
-        echo "[$TOKEN][type=$TYPE]$LOG_LINE" | nc listener.logz.io 8010
+        echo "[$TOKEN][type=$TYPE]$LOG_LINE" | nc $LISTENER_HOST 8010
         LOG_LINE=$(echo $line)
   elif [[ $LOG_LINE == "" ]]; then
         LOG_LINE=$(echo $line)

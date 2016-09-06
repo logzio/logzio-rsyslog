@@ -214,6 +214,7 @@ function write_apache_conf {
 	log "DEBUG" "Log conf file template path: ${rsyslog_tmplate}"
 
 	execute sed -i "s|USER_TOKEN|${USER_TOKEN}|g" ${rsyslog_tmplate}
+	execute sed -i "s|LISTENER_HOST|${LISTENER_HOST}|g" ${rsyslog_tmplate}
 	execute sed -i "s|RSYSLOG_SPOOL_DIR|${RSYSLOG_SPOOL_DIR}|g" ${rsyslog_tmplate}
 	execute sed -i "s|APACHE_ACCESS_LOG_PATH|${APACHE_ACCESS_LOG_PATH}|g" ${rsyslog_tmplate}
 	execute sed -i "s|APACHE_ERORR_LOG_PATH|${APACHE_ERORR_LOG_PATH}|g" ${rsyslog_tmplate}
