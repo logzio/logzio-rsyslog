@@ -18,7 +18,7 @@ curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslo
 ## Usage:
 
 ```bash
-sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--accesslog] [--errorlog] 
+sudo rsyslog/install.sh -t TYPE -a TOKEN [--quiet] [--filepath] [--filetag] [--accesslog] [--errorlog] 
 ```
 
 #### Script options:
