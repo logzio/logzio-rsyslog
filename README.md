@@ -18,7 +18,7 @@ curl -sLO https://github.com/logzio/logzio-shipper/raw/master/dist/logzio-rsyslo
 ## Usage:
 
 ```bash
-sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--accesslog] [--errorlog] 
+sudo rsyslog/install.sh -t TYPE -a TOKEN [--quiet] [--filepath] [--filetag] [--accesslog] [--errorlog] 
 ```
 
 #### Script options:
@@ -73,7 +73,7 @@ sudo rsyslog/install.sh -t TYPE -a TOKEN [--quite] [--filepath] [--filetag] [--a
 	- slow-log `/var/log/mysql/mysql-slow.log` (can be overrided using the option --slowlog)
 	- error `/var/log/mysql/error.log` (can be overrided using the option --errorlog)
 
-**-q | --quite** 
+**-q | --quiet** 
 
 	Interactive mode mode is disabled (enabled by default).
 
