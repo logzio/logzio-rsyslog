@@ -56,9 +56,9 @@ fi
 # ---------------------------------------- 
 # Setup variables
 # ---------------------------------------- 
-SCRIPT_VERSION="1.0.0"
+SCRIPT_VERSION="1.64.0"
 
-#LOGZ_DIST_URL=https://dl.bintray.com/ofervelich/generic
+#LOGZ_DIST_URL=https://github.com/logzio/logzio-rsyslog/blob/master/dist
 #LOGZ_DIST=logzio-rsyslog.tar.gz
 
 

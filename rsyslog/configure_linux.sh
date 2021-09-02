@@ -92,7 +92,7 @@ function validate_network_connectivity {
 	# Run tests nc OR netcat
 	if is_installed netcat || is_installed nc || is_installed nmap-ncat; then
 		log "INFO" "Checking if ${LISTENER_HOST} is reachable via ${LISTENER_PORT} port, using netcat. This may take some time...."
-		echo "test" | nc ${LISTENER_HOST} ${LISTENER_PORT}
+		echo "test" | nc -v -z -w 10 ${LISTENER_HOST} ${LISTENER_PORT}
 		status=$?
 	elif is_installed telnet; then
 		echo "-------------------------------------------"
